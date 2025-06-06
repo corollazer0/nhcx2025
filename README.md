@@ -10,7 +10,7 @@ iOS플랫폼은 PoC 일정 상 제외하였습니다. 각 플랫폼의 개발 �
 
 가이드를 읽기 전 아래 PoC의 목표와 디자인 시스템의 기본 개념을 확인해보세요.
 
-### [DesignOps PoC에 대한 기본 이해](https://app.netlify.com/projects/storied-cobbler-9d6c2d/deploys/6842b58a5b3dce23f36e231f)
+### [DesignOps PoC에 대한 기본 이해](https://storied-cobbler-9d6c2d.netlify.app/)
 
 ---
 
