@@ -96,7 +96,7 @@ iOS플랫폼은 PoC 일정 상 제외하였습니다. 각 플랫폼의 개발 �
 ### 확장된 디렉토리 구조
 
 ```
-my-design-system/
+nhcx2025/
 ├── package.json         # 👈 전체 프로젝트 관리 (workspaces 설정)
 │
 └── packages/
@@ -166,8 +166,8 @@ my-design-system/
 
 **전혀 불편하지 않으며, 오히려 모노레포의 장점을 극대화하는 방식입니다.**
 
--   **안드로이드 스튜디오 작동 방식**: 안드로이드 스튜디오에서 프로젝트를 열 때, Git 루트인 `my-design-system`을 여는 것이 아니라, **안드로이드 프로젝트 폴더인 `packages/ui-components-android`를 직접 선택해서 엽니다.** 스튜디오는 이 폴더를 프로젝트의 루트로 인식하고 Gradle 기반으로 완벽하게 작동합니다.
--   **Git 연동**: 안드로이드 스튜디오의 Git 기능은 현재 열린 폴더(`ui-components-android`)에 `.git`이 없으면, 상위 폴더를 탐색하여 `my-design-system`에 있는 `.git`을 찾아냅니다. 따라서 스튜디오 내에서 커밋, 푸시, 풀 등 모든 Git 명령은 **전체 저장소를 대상으로 정상적으로 작동**합니다. 개발자는 웹 파트의 변경사항까지 함께 관리할 수 있습니다.
+-   **안드로이드 스튜디오 작동 방식**: 안드로이드 스튜디오에서 프로젝트를 열 때, Git 루트인 `nhcx2025`을 여는 것이 아니라, **안드로이드 프로젝트 폴더인 `packages/ui-components-android`를 직접 선택해서 엽니다.** 스튜디오는 이 폴더를 프로젝트의 루트로 인식하고 Gradle 기반으로 완벽하게 작동합니다.
+-   **Git 연동**: 안드로이드 스튜디오의 Git 기능은 현재 열린 폴더(`ui-components-android`)에 `.git`이 없으면, 상위 폴더를 탐색하여 `nhcx2025`에 있는 `.git`을 찾아냅니다. 따라서 스튜디오 내에서 커밋, 푸시, 풀 등 모든 Git 명령은 **전체 저장소를 대상으로 정상적으로 작동**합니다. 개발자는 웹 파트의 변경사항까지 함께 관리할 수 있습니다.
 
 ---
 
@@ -179,8 +179,8 @@ my-design-system/
 
 ```bash
 # 1. 프로젝트 최상위 폴더를 만들고 이동합니다.
-mkdir my-design-system
-cd my-design-system
+mkdir nhcx2025
+cd nhcx2025
 
 # 2. npm 프로젝트로 초기화합니다.
 npm init -y
@@ -189,7 +189,7 @@ npm init -y
 #    "private": true 와 "workspaces": ["packages/*"] 속성을 추가합니다.
 #
 #    {
-#      "name": "my-design-system",
+#      "name": "nhcx2025",
 #      "private": true,
 #      "workspaces": [
 #        "packages/*"
@@ -317,27 +317,27 @@ module.exports = {
 
 1.  프로젝트 루트 폴더로 다시 이동합니다. (`cd ../../`)
 2.  각 패키지에 `name`을 부여하고 스크립트를 추가합니다.
-    -   `packages/tokens/package.json` 에 `"name": "@my-ds/tokens"`, `"scripts": { "build": "style-dictionary build" }` 추가
-    -   `packages/ui-components-web/package.json` 에 `"name": "@my-ds/ui-components-web"` 추가
+    -   `packages/tokens/package.json` 에 `"name": "@nhcx2025/tokens"`, `"scripts": { "build": "style-dictionary build" }` 추가
+    -   `packages/ui-components-web/package.json` 에 `"name": "@nhcx2025/ui-components-web"` 추가
 3.  루트 `package.json` 파일을 열어 전체 프로젝트를 위한 스크립트를 추가합니다.
     ```json
     // /package.json
     {
       "scripts": {
-        "build:tokens": "npm -w @my-ds/tokens run build",
-        "storybook": "npm -w @my-ds/ui-components-web run storybook",
-        "dev:web": "npm -w @my-ds/ui-components-web run dev"
+        "build:tokens": "npm -w @nhcx2025/tokens run build",
+        "storybook": "npm -w @nhcx2025/ui-components-web run storybook",
+        "dev:web": "npm -w @nhcx2025/ui-components-web run dev"
       }
     }
     ```
 4.  `ui-components-web`이 `tokens` 패키지를 사용할 수 있도록 의존성을 추가합니다.
     ```bash
-    npm install @my-ds/tokens -w @my-ds/ui-components-web
+    npm install @nhcx2025/tokens -w @nhcx2025/ui-components-web
     ```
 5.  `ui-components-web`의 전역 CSS 파일에서 변환된 토큰을 가져오도록 설정합니다.
     -   `packages/ui-components-web/src/styles/main.css` 파일 최상단에 아래 코드를 추가합니다.
         ```css
-        @import '@my-ds/tokens/build/css/variables.css';
+        @import '@nhcx2025/tokens/build/css/variables.css';
         ```
 
 ---
