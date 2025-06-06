@@ -20,7 +20,7 @@ module.exports = {
           destination: 'Colors.kt',
           format: 'compose/object',
           className: 'AppColors', // 생성될 코틀린 객체 이름
-          packageName: 'com.example.my_design_system.theme', // 생성될 파일의 패키지 경로
+          packageName: 'com.example.nhcx2025.theme', // 생성될 파일의 패키지 경로
           filter: {
             attributes: {
               category: 'color' // 'color' 카테고리의 토큰만 필터링

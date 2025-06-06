@@ -312,6 +312,30 @@ module.exports = {
         )
     }
     ```
+4.  **💡 어떻게 `Colors.kt` 파일을 참조하나요?**
+    기본적으로 안드로이드 프로젝트는 `src/main/java` 폴더의 코드만 인식합니다. `tokens/build/kotlin`에 생성된 파일을 인식시키려면, **모듈의 `build.gradle.kts` 파일을 수정**해야 합니다.
+
+    `packages/ui-components-android/build.gradle.kts` 파일을 열고 `android` 블록 안에 아래 `sourceSets` 설정을 추가하세요.
+
+    ```kotlin
+    // packages/ui-components-android/build.gradle.kts
+    android {
+        // ... 기존 설정들 ...
+
+        sourceSets {
+            getByName("main") {
+                java.srcDirs(
+                    "src/main/java",
+                    // 프로젝트 루트를 기준으로 생성된 토큰 폴더의 경로를 추가
+                    "../tokens/build/kotlin"
+                )
+            }
+        }
+    }
+    ```
+
+    이 설정은 Gradle에게 `../tokens/build/kotlin` 폴더도 소스 코드 폴더로 간주하라고 알려주는 역할을 합니다. 설정을 추가한 후 Android Studio에서 **Gradle Sync**를 실행하면 `import` 구문이 정상적으로 작동합니다.
+
 
 ### 5단계: 전체 시스템 연결 및 스크립트 설정
 
