@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "style-dictionary": "^5.0.0"
+  },
+  "name": "@nhcx2025/tokens",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "style-dictionary build --config style-dictionary.config.js" 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
