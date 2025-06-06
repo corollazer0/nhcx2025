@@ -1,8 +1,16 @@
-# Figma 기반 DesignOps PoC 구현 가이드 (Web & Android)
+# [NHCX] Figma 기반 DesignOps PoC 구현 가이드 (Web & Android)
 
-이 문서는 Figma와 코드를 연동하여 효율적인 디자인 시스템 및 개발 워크플로우를 검증하는 DesignOps PoC(Proof of Concept)를 위한 기술 가이드입니다.
+이 문서는 Figma와 코드를 연동하여 효율적인 디자인 시스템 및 개발 워크플로우를 검증하는  
+DesignOps PoC(Proof of Concept)를 위한 기술 가이드입니다.
 
-이 가이드는 **웹(Vue.js)과 안드로이드(Jetpack Compose)** 두 플랫폼에 대한 PoC 과정을 모두 포함하고 있습니다. 각 플랫폼의 개발 경험이 없으셔도 이 문서를 따라오시면 충분히 PoC를 진행하실 수 있습니다.
+
+이 가이드는 **웹(Vue.js)과 안드로이드(Jetpack Compose)** 두 플랫폼에 대한 PoC 과정을 모두 포함하고 있습니다.  
+iOS플랫폼은 PoC 일정 상 제외하였습니다. 각 플랫폼의 개발 경험이 없으셔도 이 문서를 따라오시면 충분히 PoC를 진행하실 수 있습니다.
+
+
+가이드를 읽기 전 아래 PoC의 목표와 디자인 시스템의 기본 개념을 확인해보세요.
+
+### [DesignOps PoC에 대한 기본 이해](https://app.netlify.com/projects/storied-cobbler-9d6c2d/deploys/6842b58a5b3dce23f36e231f)
 
 ---
 
@@ -15,11 +23,12 @@
 -   **결과**: 각 플랫폼의 독립된 UI 개발 환경(**Storybook**, **Compose Preview**)에서 디자인 변경사항이 코드에 실시간으로 반영되는 것을 확인합니다.
 
 ## 1.1 기술 스택 
--   **Figma(Untitled UI), Token Studio** 
--   **Style Dictionary**
--   **StoryBook**
--   **Vue.js, Pinia, Vue-Router**
--   **JetpackCompose**
+-   **UI Components, Page, ProtoType 개발 : Figma, Token Studio** 
+-   **UI Component 마이그레이션 : Style Dictionary**
+-   **UI 컴포넌트 개발 및 관리 : StoryBook**
+-   **웹 개발 : Vite, Vue.js, Pinia, Vue-Router**
+-   **앱 개발 : kotlin, JetpackCompose**
+-   **IDE** : VSCode, Figma Desktop, Android Studio
 
 ---
 
