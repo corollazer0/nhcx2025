@@ -7,11 +7,56 @@ DesignOps PoC(Proof of Concept)를 위한 기술 가이드입니다.
 이 가이드는 **웹(Vue.js)과 안드로이드(Jetpack Compose)** 두 플랫폼에 대한 PoC 과정을 모두 포함하고 있습니다.  
 iOS플랫폼은 PoC 일정 상 제외하였습니다. 각 플랫폼의 개발 경험이 없으셔도 이 문서를 따라오시면 충분히 PoC를 진행하실 수 있습니다.
 
-
 가이드를 읽기 전 아래 PoC의 목표와 디자인 시스템의 기본 개념을 확인해보세요.
-
 ### [DesignOps PoC에 대한 기본 이해](https://storied-cobbler-9d6c2d.netlify.app/)
 
+## NHCX 프로젝트 아키텍처 다이어그램
+```mermaid
+---
+config:
+  layout: fixed
+  theme: neo
+  look: neo
+---
+flowchart TD
+ subgraph subGraph0["기획 및 디자인 영역"]
+        B("Figma & Token Studio")
+        A["👩‍🎨 디자이너"]
+        C{"📄 tokens.json"}
+  end
+ subgraph subGraph1["중앙 관리 및 변환 영역"]
+        D["☁️ Git Repository"]
+        E["👨‍💻 개발자"]
+        F["⚙️ Style Dictionary"]
+        G1("🎨 variables.css")
+        G2("📱 Colors.kt")
+  end
+ subgraph subGraph2["웹 개발 영역"]
+        H1["🌐 ui-components-web"]
+        I1("📙 Storybook")
+        K1("🌐 web-app develop")
+  end
+ subgraph subGraph3["안드로이드 개발 영역"]
+        H2["🤖 ui-components-android"]
+        I2("🖼️ Compose Preview")
+        K2("🤖 Andrioid app develop")
+  end
+    A --> B
+    B -- [1] 토큰 정의 및 수정 --> C
+    C -- [2] Git에 Push --> D
+    E -- [3] Git Pull --> D
+    E -- [4] 빌드 명령어 실행<br>(npm run build:tokens) --> F
+    D -- 입력 --> F
+    F -- CSS 변환 --> G1
+    F -- Kotlin 변환 --> G2
+    G1 --> H1
+    H1 --> I1 & K1
+    E -- 컴포넌트 확인 --> I1 & I2
+    G2 --> H2
+    H2 --> I2 & K2
+
+
+```
 ---
 
 ## 1. 프로젝트 목표 (우리가 하려는 것)
