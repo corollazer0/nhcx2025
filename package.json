@@ -4,7 +4,10 @@
   "description": "이 문서는 Figma와 코드를 연동하여 효율적인 디자인 시스템 및 개발 워크플로우를 검증하는  \r DesignOps PoC(Proof of Concept)를 위한 기술 가이드입니다.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:tokens": "npm -w @nhcx2025/tokens run build",
+    "storybook": "npm -w @nhcx2025/ui-components-web run storybook",
+    "dev:web": "npm -w @nhcx2025/ui-components-web run dev"
   },
   "repository": {
     "type": "git",
