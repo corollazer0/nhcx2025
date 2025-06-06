@@ -14,6 +14,13 @@
 -   **과정**: 이 `JSON` 파일을 자동으로 각 플랫폼에 맞는 코드(**CSS** for Web, **Kotlin** for Android)로 변환하고, UI 컴포넌트에 적용합니다.
 -   **결과**: 각 플랫폼의 독립된 UI 개발 환경(**Storybook**, **Compose Preview**)에서 디자인 변경사항이 코드에 실시간으로 반영되는 것을 확인합니다.
 
+## 1.1 기술 스택 
+-   **Figma(Untitled UI), Token Studio** 
+-   **Style Dictionary**
+-   **StoryBook**
+-   **Vue.js, Pinia, Vue-Router**
+-   **JetpackCompose**
+
 ---
 
 ## 2. 사전 준비: 필요 도구 설치 및 역할
