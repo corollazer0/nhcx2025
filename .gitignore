@@ -179,3 +179,11 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/storybookjs,vuejs,androidstudio,android
+
+# VSCode settings
+.vscode/
+**/.vscode/
+
+# macOS specific files
+.DS_Store
+Thumbs.db
