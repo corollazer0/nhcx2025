@@ -67,7 +67,7 @@ flowchart LR
     DevPC[디자이너 & 개발자 작업 PC]
   end
 
-  subgraph Infra["☁️ 내부 서버"]
+  subgraph Infra["☁️ AWS 서버"]
     GitRepo[Git Repository]
     WebServer[웹 서버]
     AppBuild[앱 빌드 서버]
