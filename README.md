@@ -57,6 +57,37 @@ flowchart TD
 
 
 ```
+```mermaid
+flowchart LR
+  subgraph SaaS["🎨 Figma SaaS"]
+    Figma[Figma & Token Studio]
+  end
+
+  subgraph Dev["💻 개발자 PC"]
+    DevPC[디자이너 & 개발자 작업 PC]
+  end
+
+  subgraph Infra["☁️ 내부 서버"]
+    GitRepo[Git Repository]
+    WebServer[웹 서버]
+    AppBuild[앱 빌드 서버]
+  end
+
+  subgraph User["👤 고객"]
+    WebUser[🌐 웹 사용자_브라우저]
+    AppUser[📱 앱 사용자_모바일]
+  end
+
+  %% 사용자 흐름
+  Figma --> DevPC
+  DevPC --> GitRepo
+  GitRepo --> WebServer
+  GitRepo --> AppBuild
+  WebServer --> WebUser
+  AppBuild --> AppUser
+
+```
+
 ---
 
 ## 1. 프로젝트 목표 (우리가 하려는 것)
