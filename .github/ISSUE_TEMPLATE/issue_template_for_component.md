@@ -3,7 +3,6 @@ name: '⚙️ Component Task'
 title: '[Component] '
 labels: 'component'
 assignees: ''
-
 ---
 
 ### 📌 Task ID
