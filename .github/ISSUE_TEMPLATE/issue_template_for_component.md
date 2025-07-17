@@ -1,5 +1,6 @@
 ---
 name: '⚙️ Component Task'
+about: 'Figma 기반 Vue 컴포넌트 개발 태스크 템플릿'
 title: '[Component] '
 labels: 'component'
 assignees: ''
