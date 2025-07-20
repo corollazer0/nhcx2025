@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "lint": "eslint --ext .js,.vue,.ts .",
+    "lint:fix": "eslint --ext .js,.vue,.ts . --fix"
   },
   "dependencies": {
     "@nhcx2025/tokens": "^1.0.0",
