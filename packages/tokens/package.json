@@ -8,7 +8,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "style-dictionary build --config style-dictionary.config.js" 
+    "build": "style-dictionary build --config style-dictionary.config.js",
+    "build-tokens": "node build-tokens.js"
   },
   "keywords": [],
   "author": "",

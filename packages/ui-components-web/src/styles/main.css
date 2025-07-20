@@ -1,1 +1,21 @@
-@import '../../../tokens/build/css/variables.css';
+/* src/assets/styles/main.css */
+
+/* 1. Reset: 브라우저의 불일치를 제거하여 일관된 기반을 마련합니다.
+*/
+@import "./base/reset.css";
+
+/* 2. Tokens: 애플리케이션 전체에서 사용할 디자인 변수를 정의합니다.
+   이 파일 자체는 스타일을 적용하지 않으며, 변수만 선언합니다.
+*/
+@import "./tokens/tokens.css";
+@import "../../../tokens/build/css/variables.css";
+
+/* 3. Global Styles: 정의된 토큰을 사용하여 애플리케이션의
+   기본적인 body 스타일, 폰트, 링크 스타일 등을 설정합니다.
+*/
+@import "./base/global.css";
+
+/* 
+ * 컴포넌트별 스타일은 각 .vue 파일의 <style scoped>에서 관리합니다
+ * 이를 통해 스타일 캡슐화와 모듈성을 보장합니다
+ */

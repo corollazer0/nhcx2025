@@ -1,0 +1,111 @@
+/* 
+ * Global Styles
+ * 디자인 토큰을 활용한 전역 스타일 정의
+ * 초안으로 수정 필요
+ */
+
+/* Root 설정 */
+:root {
+  /* 폰트 스무딩 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* 텍스트 렌더링 최적화 */
+  text-rendering: optimizeLegibility;
+}
+
+/* Body 기본 스타일 */
+body {
+  /* 토큰 활용 - token.css에 정의된 변수 사용 */
+  font-family: var(
+    --font-family-base,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif
+  );
+  font-size: var(--font-size-base, 16px);
+  line-height: var(--line-height-base, 1.5);
+  color: var(--color-text-primary, #1a1a1a);
+  background-color: var(--color-background, #ffffff);
+
+  /* 스크롤 동작 개선 */
+  scroll-behavior: smooth;
+}
+
+/* 포커스 스타일 - 접근성 */
+:focus-visible {
+  outline: 2px solid var(--color-primary, #0066cc);
+  outline-offset: 2px;
+}
+
+/* 링크 기본 스타일 */
+a {
+  color: var(--color-link, var(--color-primary));
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-link-hover, var(--color-primary-dark));
+}
+
+/* 헤딩 스타일 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-heading, var(--font-family-base));
+  font-weight: var(--font-weight-bold, 700);
+  line-height: var(--line-height-heading, 1.2);
+  color: var(--color-text-heading, var(--color-text-primary));
+}
+
+h1 {
+  font-size: var(--font-size-h1, 2.5rem);
+}
+h2 {
+  font-size: var(--font-size-h2, 2rem);
+}
+h3 {
+  font-size: var(--font-size-h3, 1.75rem);
+}
+h4 {
+  font-size: var(--font-size-h4, 1.5rem);
+}
+h5 {
+  font-size: var(--font-size-h5, 1.25rem);
+}
+h6 {
+  font-size: var(--font-size-h6, 1rem);
+}
+
+/* 선택 영역 스타일 */
+::selection {
+  background-color: var(--color-selection-bg, rgba(0, 102, 204, 0.2));
+  color: var(--color-selection-text, inherit);
+}
+
+/* 이미지 기본 설정 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 버튼 리셋 및 기본 스타일 */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* 폼 요소 기본 스타일 */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}

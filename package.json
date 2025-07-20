@@ -21,7 +21,10 @@
   },
   "homepage": "https://github.com/corollazer0/nhcx2025#readme",
   "private": true,
-  "workspaces":[
+  "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "modern-normalize": "^3.0.1"
+  }
 }
