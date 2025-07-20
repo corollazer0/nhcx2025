@@ -25,6 +25,9 @@ function getStyleDictionaryConfig(themeName, themeTokens) {
   const [theme, viewport] = themeName.split("-");
 
   return {
+    // log: {
+    //   verbosity: "verbose",
+    // },
     tokens: themeTokens,
     platforms: {
       css: {

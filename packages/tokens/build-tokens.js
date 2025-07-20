@@ -7,6 +7,8 @@ const {
 } = require("./style-dictionary.config.js");
 const tokens = require("./input/tokens.json");
 
+StyleDictionary.log = { verbosity: "verbose" };
+
 console.log("Build started...");
 
 const mergeTokensForTheme = (modeTokens, responsiveTokens) => {
