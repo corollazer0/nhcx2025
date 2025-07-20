@@ -1,33 +1,59 @@
-// packages/tokens/sd.config.cjs
-module.exports = {
-  source: ['input/tokens.json'],
-  platforms: {
-    // 1. 웹 플랫폼 설정
-    css: {
-      transformGroup: 'css',
-      buildPath: 'build/css/',
-      files: [{
-        destination: 'variables.css',
-        format: 'css/variables'
-      }]
-    },
-    // 2. 안드로이드 플랫폼 설정 추가
-    compose: {
-      transformGroup: 'compose',
-      buildPath: 'build/kotlin/', // 코틀린 파일이 생성될 경로
-      files: [
-        {
-          destination: 'Colors.kt',
-          format: 'compose/object',
-          className: 'AppColors', // 생성될 코틀린 객체 이름
-          packageName: 'com.example.nhcx2025.theme', // 생성될 파일의 패키지 경로
-          filter: {
-            attributes: {
-              category: 'color' // 'color' 카테고리의 토큰만 필터링
-            }
-          }
-        },
-      ]
-    }
+// packages/tokens/style-dictionary.config.js
+
+function deepMerge(target, source) {
+  const output = { ...target };
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach((key) => {
+      if (isObject(source[key])) {
+        if (!(key in target)) Object.assign(output, { [key]: source[key] });
+        else output[key] = deepMerge(target[key], source[key]);
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
   }
-};
+  return output;
+}
+function isObject(item) {
+  return item && typeof item === "object" && !Array.isArray(item);
+}
+
+/**
+ * 특정 테마 조합에 대한 Style Dictionary 설정 객체를 생성하는 함수
+ */
+function getStyleDictionaryConfig(themeName, themeTokens) {
+  const [theme, viewport] = themeName.split("-");
+
+  return {
+    tokens: themeTokens,
+    platforms: {
+      css: {
+        transformGroup: "css",
+        buildPath: "build/css/",
+        prefix: "nhcx",
+        files: [
+          {
+            destination: `${themeName}.css`,
+            format: "css/variables",
+            options: { selector: `.${theme}-theme-${viewport}` },
+          },
+        ],
+      },
+      compose: {
+        transformGroup: "compose",
+        buildPath: "build/kotlin/",
+        files: [
+          {
+            destination: `${theme.charAt(0).toUpperCase() + theme.slice(1)}Colors.kt`,
+            format: "compose/object",
+            className: `${theme.charAt(0).toUpperCase() + theme.slice(1)}AppColors`,
+            packageName: "com.example.nhcx2025.theme",
+            filter: (token) => token.type === "color",
+          },
+        ],
+      },
+    },
+  };
+}
+
+module.exports = { getStyleDictionaryConfig, deepMerge };
