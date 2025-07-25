@@ -88,6 +88,28 @@ flowchart LR
 
 ```
 
+```mermaid
+graph TD
+    A[디자이너] --> B{Figma: UI 컴포넌트 기획 및 디자인};
+    B --> C{개발자};
+
+    C --> D[Vue.js: 컴포넌트 개발];
+    D --> E[Storybook: 컴포넌트 시각화 및 문서화];
+
+    E --> F[Chromatic: 시각적 회귀 테스트];
+    D --> G[Vitest: 단위/통합 테스트];
+
+    F -- 시각적 변화 감지/승인 --> H[CI/CD 파이프라인];
+    G -- 테스트 결과 --> H;
+
+    H --> I[NPM: 컴포넌트 라이브러리 배포];
+    H --> J[Storybook/Chromatic 호스팅: 문서 및 데모 배포];
+
+    I -- 재사용 --> K[다른 Vue.js 프로젝트];
+    J -- 참고 --> A;
+    J -- 참고 --> K;
+```
+
 ---
 
 ## 1. 프로젝트 목표 (우리가 하려는 것)
