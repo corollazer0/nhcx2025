@@ -1,0 +1,28 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "include": [
+    "src/**/*",
+    "src/**/*.vue",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "test"
+  ],
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": [
+      "vitest/globals",
+      "vite/client",
+      "jsdom",
+      "node",
+      "@types/jsdom",
+      "@testing-library/jest-dom"
+    ]
+  }
+}
