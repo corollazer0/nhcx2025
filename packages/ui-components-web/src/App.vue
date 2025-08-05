@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
 import Breadcrumb from './components/Breadcrumb.vue';
 import GeneralList from './components/GeneralList.vue';
 import GeneralListExample from './components/GeneralListExample.vue';
@@ -30,7 +29,6 @@ const handleItemClick = (item: any, index: number, event: MouseEvent | KeyboardE
 
 <template>
   <div>
-    <HelloWorld msg="Vite + Vue" />
     <hr />
     <Breadcrumb :items="breadcrumbItems" :max-visible-items="5" />
     <hr />
