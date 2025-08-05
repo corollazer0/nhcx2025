@@ -1,5 +1,11 @@
-# Vue 3 + Vite
+# 프로젝트 환경 설정
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 1. package.json 의존성 설정
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 2. vitest 설정
+
+## 3. storybook 설정
+
+## 4. typescript 전환 설정
+
+## 5. 기존 App Typescript 변환
