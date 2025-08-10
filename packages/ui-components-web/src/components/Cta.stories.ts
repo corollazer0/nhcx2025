@@ -88,10 +88,21 @@ export const Playground: Story = {
     primaryText: '버튼명',
     secondaryText: '버튼',
   },
+  render: (args) => ({
+    components: { Cta },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div style="height: 120px; width: 400px; border: 1px solid #e1e1e1; border-radius: 8px; overflow: hidden;">
+        <Cta v-bind="args" />
+      </div>
+    `,
+  }),
   parameters: {
     docs: {
       description: {
-        story: '모든 props를 자유롭게 조작하여 컴포넌트의 다양한 상태를 확인할 수 있습니다.',
+        story: '모든 props를 자유롭게 조작하여 컴포넌트의 다양한 상태를 확인할 수 있습니다. 부모 컨테이너 크기(400x120px)에 맞춰 렌더링됩니다.',
       },
     },
   },

@@ -25,14 +25,14 @@
           data-testid="popup-5-5"
         >
           <button
-            class="cta__button cta__button--tertiary"
+            class="cta__button cta__button--tertiary cta__button--flex"
             type="button"
             @click="handleSecondaryClick"
           >
             <span class="cta__button-text">{{ secondaryText }}</span>
           </button>
           <button
-            class="cta__button cta__button--secondary"
+            class="cta__button cta__button--secondary cta__button--flex"
             type="button"
             @click="handlePrimaryClick"
           >
@@ -87,14 +87,14 @@
           data-testid="basic-5-5"
         >
           <button
-            class="cta__button cta__button--tertiary"
+            class="cta__button cta__button--tertiary cta__button--flex"
             type="button"
             @click="handleSecondaryClick"
           >
             <span class="cta__button-text cta__button-text--large">{{ secondaryText }}</span>
           </button>
           <button
-            class="cta__button cta__button--primary"
+            class="cta__button cta__button--primary cta__button--flex"
             type="button"
             @click="handlePrimaryClick"
           >
