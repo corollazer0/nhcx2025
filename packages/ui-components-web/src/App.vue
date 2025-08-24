@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+
 import Breadcrumb from './components/Breadcrumb.vue';
 import GeneralList from './components/GeneralList.vue';
 import GeneralListExample from './components/GeneralListExample.vue';
+import Cta from './components/Cta.vue';
 
 const breadcrumbItems = ref([
   { name: '홈', path: '/' },
@@ -52,6 +53,8 @@ const handleItemClick = (item: any, index: number, event: MouseEvent | KeyboardE
       @close-click="handleClose"
       @list-item-click="handleItemClick"
     />
+    <hr />
+    <Cta primaryText="가입하기" ratio="cta-5:5" secondaryText="취소" type="basic" />
   </div>
 </template>
 

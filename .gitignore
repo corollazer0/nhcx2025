@@ -186,3 +186,7 @@ fabric.properties
 # macOS specific files
 .DS_Store
 Thumbs.db
+
+
+# pdf
+*.pdf
