@@ -10,11 +10,12 @@
     :aria-label="ariaLabel"
   >
     <path 
-      d="M9 18L15 12L9 6" 
-      :stroke="strokeColor" 
-      stroke-width="1.5" 
-      stroke-linecap="round" 
-      stroke-linejoin="round"
+      d="M12 16L7 11H10V3H14V11H17L12 16Z" 
+      :fill="fillColor"
+    />
+    <path 
+      d="M5 20V18H19V20H5Z" 
+      :fill="fillColor"
     />
   </svg>
 </template>
@@ -22,34 +23,34 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-interface IconChevronRightProps {
+interface IconDownloadProps {
   size?: string | number;
-  strokeColor?: string;
+  fillColor?: string;
   ariaLabel?: string;
   class?: string;
 }
 
-const props = withDefaults(defineProps<IconChevronRightProps>(), {
+const props = withDefaults(defineProps<IconDownloadProps>(), {
   size: 24,
-  strokeColor: '#707070',
-  ariaLabel: '더보기',
+  fillColor: '#707070',
+  ariaLabel: '다운로드',
   class: ''
 });
 
 const iconClass = computed(() => {
-  return props.class || 'icon-chevron-right';
+  return props.class || 'icon-download';
 });
 </script>
 
 <style scoped>
-.icon-chevron-right {
+.icon-download {
   display: inline-block;
   vertical-align: middle;
   transition: opacity 0.2s ease;
   cursor: pointer;
 }
 
-.icon-chevron-right:hover {
+.icon-download:hover {
   opacity: 0.7;
 }
 </style>
