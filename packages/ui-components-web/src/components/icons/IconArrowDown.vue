@@ -10,7 +10,7 @@
     :aria-label="ariaLabel"
   >
     <path 
-      d="M9 18L15 12L9 6" 
+      d="M6.5 9.5L11.7507 14.5L17 9.5" 
       :stroke="strokeColor" 
       stroke-width="1.5" 
       stroke-linecap="round" 
@@ -22,34 +22,37 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-interface IconChevronRightProps {
+interface IconArrowDownProps {
   size?: string | number;
   strokeColor?: string;
   ariaLabel?: string;
   class?: string;
 }
 
-const props = withDefaults(defineProps<IconChevronRightProps>(), {
+const props = withDefaults(defineProps<IconArrowDownProps>(), {
   size: 24,
-  strokeColor: '#707070',
-  ariaLabel: '더보기',
+  strokeColor: '#111111',
+  ariaLabel: '펼치기',
   class: ''
 });
 
 const iconClass = computed(() => {
-  return props.class || 'icon-chevron-right';
+  return props.class || 'icon-arrow-down';
 });
 </script>
 
 <style scoped>
-.icon-chevron-right {
+.icon-arrow-down {
   display: inline-block;
   vertical-align: middle;
-  transition: opacity 0.2s ease;
-  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.icon-chevron-right:hover {
+.icon-arrow-down--rotated {
+  transform: rotate(180deg);
+}
+
+.icon-arrow-down:hover {
   opacity: 0.7;
 }
 </style>
