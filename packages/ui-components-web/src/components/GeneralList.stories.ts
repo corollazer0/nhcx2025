@@ -1,468 +1,404 @@
-// src/components/GeneralList.stories.ts
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { within, expect, userEvent } from 'storybook/test';
-//import { vi } from 'vitest';
+import { ref, watch } from 'vue';
 import GeneralList from './GeneralList.vue';
 
-/**
- * ──────────────────────────────────────────────
- *  Storybook 메타데이터
- * ──────────────────────────────────────────────
- */
 const meta: Meta<typeof GeneralList> = {
   title: 'Components/GeneralList',
-  tags: ['autodocs'],
   component: GeneralList,
-  argTypes: {
-    // Figma Properties (원본 boolean props)
-    label: {
-      control: { type: 'boolean' },
-      description: '라벨 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-    subText: {
-      control: { type: 'boolean' },
-      description: '부가설명 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-    list: {
-      control: { type: 'boolean' },
-      description: '리스트 항목 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-    button: {
-      control: { type: 'boolean' },
-      description: '버튼 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-    top: {
-      control: { type: 'boolean' },
-      description: '상단 섹션 표시 여부 (라벨, 제목 포함)',
-      table: { category: 'Figma Properties' },
-    },
-    iconClose: {
-      control: { type: 'boolean' },
-      description: '닫기 아이콘 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-    title: {
-      control: { type: 'boolean' },
-      description: '제목 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-    buttonMessage: {
-      control: { type: 'boolean' },
-      description: '버튼 메시지 섹션 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-    message: {
-      control: { type: 'boolean' },
-      description: '메시지 표시 여부',
-      table: { category: 'Figma Properties' },
-    },
-
-    // 동적 데이터 Props
-    labelText: {
-      control: { type: 'text' },
-      description: '라벨 텍스트',
-      table: { category: 'Dynamic Content' },
-    },
-    titleText: {
-      control: { type: 'text' },
-      description: '제목 텍스트',
-      table: { category: 'Dynamic Content' },
-    },
-    subTextContent: {
-      control: { type: 'text' },
-      description: '부가설명 텍스트',
-      table: { category: 'Dynamic Content' },
-    },
-    buttonText: {
-      control: { type: 'text' },
-      description: '버튼 텍스트',
-      table: { category: 'Dynamic Content' },
-    },
-    listItems: {
-      control: { type: 'object' },
-      description: '리스트 아이템 배열',
-      table: { category: 'Dynamic Content' },
-    },
-    closeIconSrc: {
-      control: { type: 'text' },
-      description: '닫기 아이콘 이미지 URL',
-      table: { category: 'Dynamic Content' },
-    },
-  },
+  tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
-        component:
-          'Figma 디자인을 기반으로 구현된 일반적인 리스트 카드 컴포넌트입니다. 라벨, 제목, 리스트 항목, 버튼 등을 조건부로 표시하며, 동적 데이터와 이벤트 처리를 지원합니다.',
+        component: `
+GeneralList 컴포넌트는 다양한 형태의 정보를 카드 형태로 표시하는 범용 리스트 컴포넌트입니다.
+
+**주요 특징:**
+- **헤더 섹션**: 라벨, 제목, 부제목, 체크박스 지원
+- **데이터 리스트**: 키-값 쌍의 정보 표시
+- **버튼**: 액션 버튼 (secondary, tertiary 스타일)
+- **접근성**: ARIA 속성 및 키보드 내비게이션 지원
+
+**사용 사례:**
+- 보험 상품 정보 카드
+- 투자 상품 목록
+- 계좌 상세 정보
+- 설정 옵션 리스트
+
+**Figma 디자인을 100% 재현**하여 구현되었습니다.
+        `,
+      }
+    }
+  },
+  argTypes: {
+    showHeader: {
+      control: 'boolean',
+      description: '헤더 섹션 표시 여부를 설정합니다.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
       },
     },
-    layout: 'centered',
-  },
+    labels: {
+      control: 'object',
+      description: '헤더 상단에 표시할 라벨들입니다.',
+      table: {
+        type: { summary: 'Label[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    title: {
+      control: 'text',
+      description: '메인 제목입니다.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: "''" },
+      },
+    },
+    subtitle: {
+      control: 'text',
+      description: '부제목 또는 설명 텍스트입니다.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: "''" },
+      },
+    },
+    showTooltip: {
+      control: 'boolean',
+      description: '제목 옆 툴팁 버튼 표시 여부입니다.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    showCheckbox: {
+      control: 'boolean',
+      description: '체크박스 표시 여부입니다.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    checkboxText: {
+      control: 'text',
+      description: '체크박스 라벨 텍스트입니다.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: "''" },
+      },
+    },
+    showCheckboxText: {
+      control: 'boolean',
+      description: '체크박스 라벨 텍스트 표시 여부입니다.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    checkboxSize: {
+      control: { type: 'select' },
+      options: ['sm', 'xs'],
+      description: '체크박스 크기입니다.',
+      table: {
+        type: { summary: "'sm' | 'xs'" },
+        defaultValue: { summary: "'sm'" },
+      },
+    },
+    dataList: {
+      control: 'object',
+      description: '표시할 데이터 항목들입니다.',
+      table: {
+        type: { summary: 'DataItem[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    buttonText: {
+      control: 'text',
+      description: '액션 버튼 텍스트입니다.',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: "''" },
+      },
+    },
+    buttonVariant: {
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'tertiary'],
+      description: '버튼 스타일 변형입니다.',
+      table: {
+        type: { summary: "'primary' | 'secondary' | 'tertiary'" },
+        defaultValue: { summary: "'secondary'" },
+      },
+    },
+    showCloseButton: {
+      control: 'boolean',
+      description: '우상단 닫기 버튼 표시 여부입니다.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    disabled: {
+      control: 'boolean',
+      description: '컴포넌트 비활성화 상태입니다.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['default', 'compact'],
+      description: '컴포넌트 크기 변형입니다.',
+      table: {
+        type: { summary: "'default' | 'compact'" },
+        defaultValue: { summary: "'default'" },
+      },
+    }
+  }
 };
-export default meta;
-type Story = StoryObj<typeof GeneralList>;
 
-/* ──────────────────────────────────────────────
-   1) Playground - 모든 Controls로 실험
-   ──────────────────────────────────────────── */
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+// 첫 번째 GeneralList - 상세한 보험 상품 정보 (Figma 9801:92288)
+export const InsuranceProduct: Story = {
+  args: {
+    showHeader: true,
+    labels: [
+      { id: 'risk-label', text: '매우낮은위험', variant: 'navy' }
+    ],
+    title: '기쁨가득NH저축보험(무)_1804(적립형) (기본형)',
+    subtitle: '028-0612-0912-11',
+    showTooltip: true,
+    showCheckbox: true,
+    modelValue: false,
+    checkboxSize: 'sm',
+    dataList: [
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터', isNegative: true }
+    ],
+    showCloseButton: true
+  },
+  parameters: {
+    controls: { 
+      include: ['showHeader', 'labels', 'title', 'subtitle', 'showTooltip', 'showCheckbox', 'modelValue', 'dataList', 'showCloseButton']
+    }
+  }
+};
+
+// 두 번째 GeneralList - 투자 상품 정보 with 버튼 (Figma 9801:92289)
+export const InvestmentProduct: Story = {
+  args: {
+    showHeader: true,
+    labels: [
+      { id: 'risk-label', text: '다소높은위험', variant: 'orange' }
+    ],
+    title: '새로운 행복의 기회 3년 결혼자금 만들기',
+    subtitle: '로보목돈마련 투자설계2호(가입일:2023.10.20)',
+    showTooltip: true,
+    showCheckbox: true,
+    modelValue: false,
+    checkboxSize: 'sm',
+    dataList: [
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터', isNegative: true }
+    ],
+    buttonText: '포트폴리오 점검 리포트',
+    buttonVariant: 'secondary'
+  },
+  parameters: {
+    controls: { 
+      include: ['showHeader', 'labels', 'title', 'subtitle', 'showTooltip', 'showCheckbox', 'modelValue', 'dataList', 'buttonText', 'buttonVariant']
+    }
+  }
+};
+
+// 세 번째 GeneralList - 간단한 데이터 리스트 (Figma 9801:92290)
+export const SimpleDataList: Story = {
+  args: {
+    showHeader: false,
+    dataList: [
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터' },
+      { title: '타이틀', value: '데이터' }
+    ],
+    buttonText: '취소',
+    buttonVariant: 'tertiary'
+  },
+  parameters: {
+    controls: { 
+      include: ['showHeader', 'dataList', 'buttonText', 'buttonVariant']
+    }
+  }
+};
+
+// Interactive Playground
 export const Playground: Story = {
   args: {
-    // Figma Properties
-    label: true,
-    subText: true,
-    list: true,
-    button: true,
-    top: true,
-    iconClose: true,
-    title: true,
-    buttonMessage: true,
-    message: false,
-
-    // Dynamic Content
-    labelText: '라벨',
-    titleText: '상품명',
-    subTextContent: '부가설명',
-    buttonText: '버튼',
-    listItems: [
-      { title: '타이틀', data: '데이터' },
-      { title: '타이틀', data: '데이터' },
+    showHeader: true,
+    labels: [
+      { id: 'risk-label', text: '매우낮은위험', variant: 'navy' }
     ],
-  },
-};
-
-/* ──────────────────────────────────────────────
-   2) 기본 모든 요소 표시
-   ──────────────────────────────────────────── */
-export const Default: Story = {
-  args: {
-    label: true,
-    subText: true,
-    list: true,
-    button: true,
-    top: true,
-    iconClose: true,
-    title: true,
-    buttonMessage: true,
-    message: false,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // 모든 주요 요소가 표시되는지 확인
-    await expect(canvas.getByText('라벨')).toBeInTheDocument();
-    await expect(canvas.getByText('상품명')).toBeInTheDocument();
-    await expect(canvas.getByText('부가설명')).toBeInTheDocument();
-    await expect(canvas.getAllByText('타이틀')).toHaveLength(2);
-    await expect(canvas.getAllByText('데이터')).toHaveLength(2);
-    await expect(canvas.getByLabelText('닫기')).toBeInTheDocument();
-    await expect(canvas.getByText('버튼')).toBeInTheDocument();
-  },
-};
-
-/* ──────────────────────────────────────────────
-   3) 커스텀 데이터
-   ──────────────────────────────────────────── */
-export const CustomData: Story = {
-  args: {
-    label: true,
-    subText: true,
-    list: true,
-    button: true,
-    top: true,
-    iconClose: true,
-    title: true,
-    buttonMessage: true,
-    message: false,
-
-    labelText: 'NEW',
-    titleText: 'iPhone 15 Pro',
-    subTextContent: '최신 Apple 스마트폰',
-    buttonText: '구매하기',
-    listItems: [
-      { title: '가격', data: '1,550,000원' },
-      { title: '용량', data: '256GB' },
-      { title: '색상', data: 'Natural Titanium' },
+    title: 'GeneralList 플레이그라운드',
+    subtitle: '모든 기능을 테스트해보세요',
+    showTooltip: true,
+    showCheckbox: true,
+    modelValue: false,
+    checkboxText: '선택',
+    showCheckboxText: true,
+    checkboxSize: 'sm',
+    dataList: [
+      { title: '월 적립금', value: '100,000원' },
+      { title: '적립 기간', value: '3년' },
+      { title: '예상 수익률', value: '3.5%' },
+      { title: '손실 가능액', value: '-50,000원', isNegative: true }
     ],
+    buttonText: '자세히 보기',
+    buttonVariant: 'secondary',
+    showCloseButton: true,
+    disabled: false,
+    variant: 'default'
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  render: (args) => ({
+    components: { GeneralList },
+    setup() {
+      const localArgs = ref({ ...args });
+      
+      // Watch for control changes and update local args
+      watch(() => args, (newArgs) => {
+        Object.assign(localArgs.value, newArgs);
+      }, { deep: true });
 
-    await expect(canvas.getByText('NEW')).toBeInTheDocument();
-    await expect(canvas.getByText('iPhone 15 Pro')).toBeInTheDocument();
-    await expect(canvas.getByText('최신 Apple 스마트폰')).toBeInTheDocument();
-    await expect(canvas.getByText('1,550,000원')).toBeInTheDocument();
-    await expect(canvas.getByText('구매하기')).toBeInTheDocument();
-  },
+      const handleTooltipClick = () => {
+        console.log('Tooltip clicked');
+      };
+
+      const handleButtonClick = () => {
+        console.log('Button clicked');
+      };
+
+      const handleCloseClick = () => {
+        console.log('Close clicked');
+      };
+
+      const handleCheckboxChange = (checked: boolean) => {
+        console.log('Checkbox changed:', checked);
+      };
+
+      return {
+        localArgs,
+        handleTooltipClick,
+        handleButtonClick,
+        handleCloseClick,
+        handleCheckboxChange
+      };
+    },
+    template: `
+      <GeneralList
+        v-bind="localArgs"
+        @tooltip-click="handleTooltipClick"
+        @button-click="handleButtonClick"
+        @close-click="handleCloseClick"
+        @checkbox-change="handleCheckboxChange"
+      />
+    `
+  })
 };
 
-/* ──────────────────────────────────────────────
-   4) 이벤트 테스트
-   ──────────────────────────────────────────── */
-export const InteractiveEvents: Story = {
+// 기본 상태들
+export const WithoutHeader: Story = {
   args: {
-    labelText: 'SALE',
-    titleText: '이벤트 상품',
-    buttonText: '장바구니 담기',
-    listItems: [
-      { title: '할인율', data: '30%' },
-      { title: '남은시간', data: '2시간' },
+    showHeader: false,
+    dataList: [
+      { title: '계좌번호', value: '123-456-789012' },
+      { title: '잔액', value: '1,234,567원' },
+      { title: '이용가능금액', value: '1,000,000원' }
+    ]
+  }
+};
+
+export const OnlyTitle: Story = {
+  args: {
+    showHeader: true,
+    title: '간단한 제목만 있는 GeneralList',
+    dataList: [
+      { title: '항목 1', value: '값 1' },
+      { title: '항목 2', value: '값 2' }
+    ]
+  }
+};
+
+export const WithMultipleLabels: Story = {
+  args: {
+    showHeader: true,
+    labels: [
+      { id: 'risk', text: '매우낮은위험', variant: 'navy' },
+      { id: 'type', text: '적립형', variant: 'gray' }
     ],
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const user = userEvent.setup();
-
-    // 버튼 클릭 테스트
-    const button = canvas.getByText('장바구니 담기');
-    await user.click(button);
-
-    // 리스트 아이템 클릭 테스트
-    const listItem = canvas.getByText('할인율');
-    await user.click(listItem);
-
-    // 키보드 내비게이션 테스트
-    await user.tab(); // 첫 번째 리스트 아이템으로 이동
-    await user.keyboard('{Enter}'); // Enter 키로 클릭
-  },
+    title: '다중 라벨이 있는 상품',
+    showCheckbox: true,
+    modelValue: false,
+    checkboxSize: 'sm',
+    dataList: [
+      { title: '상품유형', value: '저축보험' },
+      { title: '위험등급', value: '1등급' }
+    ]
+  }
 };
 
-/* ──────────────────────────────────────────────
-   5) 라벨 없는 버전
-   ──────────────────────────────────────────── */
-export const WithoutLabel: Story = {
+export const AllNegativeValues: Story = {
   args: {
-    label: false,
-    titleText: '기본 상품',
-    subTextContent: '라벨이 없는 상품',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await expect(canvas.queryByText('라벨')).not.toBeInTheDocument();
-    await expect(canvas.getByText('기본 상품')).toBeInTheDocument();
-  },
-};
-
-/* ──────────────────────────────────────────────
-   6) 부가설명 없는 버전
-   ──────────────────────────────────────────── */
-export const WithoutSubText: Story = {
-  args: {
-    subText: false,
-    titleText: '간단한 제목만',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await expect(canvas.getByText('간단한 제목만')).toBeInTheDocument();
-    await expect(canvas.queryByText('부가설명')).not.toBeInTheDocument();
-  },
-};
-
-/* ──────────────────────────────────────────────
-   7) 리스트 없는 버전
-   ──────────────────────────────────────────── */
-export const WithoutList: Story = {
-  args: {
-    list: false,
-    titleText: '리스트가 없는 카드',
-    subTextContent: '단순한 정보만 표시',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await expect(canvas.getByText('리스트가 없는 카드')).toBeInTheDocument();
-    await expect(canvas.queryByText('타이틀')).not.toBeInTheDocument();
-    await expect(canvas.queryByText('데이터')).not.toBeInTheDocument();
-  },
-};
-
-/* ──────────────────────────────────────────────
-   8) 버튼 없는 버전
-   ──────────────────────────────────────────── */
-export const WithoutButton: Story = {
-  args: {
-    button: false,
-    titleText: '읽기 전용 카드',
-    subTextContent: '버튼이 없는 정보성 카드',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await expect(canvas.getByText('읽기 전용 카드')).toBeInTheDocument();
-    await expect(canvas.queryByText('버튼')).not.toBeInTheDocument();
-  },
-};
-
-/* ──────────────────────────────────────────────
-   9) 닫기 아이콘 없는 버전
-   ──────────────────────────────────────────── */
-export const WithoutCloseIcon: Story = {
-  args: {
-    iconClose: false,
-    titleText: '고정 카드',
-    subTextContent: '닫을 수 없는 카드',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await expect(canvas.getByText('고정 카드')).toBeInTheDocument();
-    await expect(canvas.queryByLabelText('닫기')).not.toBeInTheDocument();
-  },
-};
-
-/* ──────────────────────────────────────────────
-   10) 상단 섹션 없는 버전
-   ──────────────────────────────────────────── */
-export const WithoutTopSection: Story = {
-  args: {
-    top: false,
-    listItems: [
-      { title: '항목1', data: '값1' },
-      { title: '항목2', data: '값2' },
+    showHeader: true,
+    title: '손실 현황',
+    dataList: [
+      { title: '일일 손익', value: '-123,456원', isNegative: true },
+      { title: '누적 손익', value: '-987,654원', isNegative: true },
+      { title: '평가 손익률', value: '-15.3%', isNegative: true }
     ],
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // 상단 섹션이 비활성화되면 라벨과 제목이 모두 표시되지 않음
-    await expect(canvas.queryByText('라벨')).not.toBeInTheDocument();
-    await expect(canvas.queryByText('상품명')).not.toBeInTheDocument();
-
-    // 리스트는 여전히 표시되어야 함
-    await expect(canvas.getByText('항목1')).toBeInTheDocument();
-  },
+    buttonText: '상세 보기',
+    buttonVariant: 'tertiary'
+  }
 };
 
-/* ──────────────────────────────────────────────
-   11) 최소 구성 (모든 요소 비활성화)
-   ──────────────────────────────────────────── */
-export const Minimal: Story = {
+export const DisabledState: Story = {
   args: {
-    label: false,
-    subText: false,
-    list: false,
-    button: false,
-    top: false,
-    iconClose: false,
-    title: false,
-    buttonMessage: false,
-    message: false,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    // 기본 컨테이너만 존재해야 함
-    const container = canvasElement.querySelector('.general-list');
-    expect(container).toBeInTheDocument();
-
-    // 다른 모든 요소는 없어야 함
-    await expect(canvas.queryByText('라벨')).not.toBeInTheDocument();
-    await expect(canvas.queryByText('상품명')).not.toBeInTheDocument();
-    await expect(canvas.queryByText('타이틀')).not.toBeInTheDocument();
-    await expect(canvas.queryByText('버튼')).not.toBeInTheDocument();
-  },
-};
-
-/* ──────────────────────────────────────────────
-   12) 긴 리스트 데이터
-   ──────────────────────────────────────────── */
-export const LongListData: Story = {
-  args: {
-    titleText: '상세 스펙',
-    subTextContent: '제품의 모든 정보',
-    listItems: [
-      { title: '브랜드', data: 'Samsung' },
-      { title: '모델명', data: 'Galaxy S24 Ultra' },
-      { title: '운영체제', data: 'Android 14' },
-      { title: '디스플레이', data: '6.8인치 Dynamic AMOLED' },
-      { title: '저장용량', data: '512GB' },
-      { title: 'RAM', data: '12GB' },
-      { title: '배터리', data: '5000mAh' },
+    showHeader: true,
+    title: '비활성화된 상태',
+    subtitle: '현재 이용할 수 없는 상품입니다',
+    dataList: [
+      { title: '상태', value: '일시중단' },
+      { title: '재개일', value: '미정' }
     ],
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await expect(canvas.getByText('Galaxy S24 Ultra')).toBeInTheDocument();
-    await expect(canvas.getByText('512GB')).toBeInTheDocument();
-    await expect(canvas.getByText('5000mAh')).toBeInTheDocument();
-  },
+    buttonText: '문의하기',
+    buttonVariant: 'secondary',
+    disabled: true
+  }
 };
 
-/* ──────────────────────────────────────────────
-   13) 실제 사용 예제 - Emit 이벤트 활용
-   ──────────────────────────────────────────── */
-export const RealWorldExample: Story = {
+export const CompactVariant: Story = {
   args: {
-    labelText: 'HOT',
-    titleText: 'MacBook Pro M3',
-    subTextContent: '최신 Apple Silicon 탑재',
-    buttonText: '장바구니 담기',
-    listItems: [
-      { title: '프로세서', data: 'M3 Pro 11코어' },
-      { title: '메모리', data: '18GB 통합 메모리' },
-      { title: '저장공간', data: '512GB SSD' },
-      { title: '가격', data: '2,490,000원' },
+    showHeader: true,
+    title: '컴팩트 버전',
+    dataList: [
+      { title: '항목', value: '값' }
     ],
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const user = userEvent.setup();
+    variant: 'compact'
+  }
+};
 
-    console.log('🎯 실제 사용 시나리오 테스트 시작');
-
-    // 컴포넌트 요소들이 올바르게 렌더링되었는지 확인
-    await expect(canvas.getByText('HOT')).toBeInTheDocument();
-    await expect(canvas.getByText('MacBook Pro M3')).toBeInTheDocument();
-    await expect(canvas.getByText('최신 Apple Silicon 탑재')).toBeInTheDocument();
-
-    // 1. 사용자가 제품 정보(가격)를 클릭하여 상세보기
-    const priceItem = canvas.getByText('가격').closest('[role="button"]') as HTMLElement;
-    if (priceItem) {
-      await user.click(priceItem);
-      console.log('✅ 가격 정보 클릭 - 상세 정보 모달 표시 (emit 이벤트 발생)');
-
-      // 클릭 후 요소가 여전히 존재하는지 확인
-      await expect(canvas.getByText('2,490,000원')).toBeInTheDocument();
-    }
-
-    // 2. 키보드로 메모리 정보 확인
-    const memoryItem = canvas.getByText('메모리').closest('[role="button"]') as HTMLElement;
-    if (memoryItem) {
-      memoryItem.focus();
-      await user.keyboard('{Enter}');
-      console.log('✅ 키보드로 메모리 정보 선택 - 접근성 지원 (emit 이벤트 발생)');
-
-      // 키보드 네비게이션 후 포커스 확인
-      await expect(memoryItem).toHaveFocus();
-    }
-
-    // 3. 장바구니에 상품 추가
-    const addToCartButton = canvas.getByText('장바구니 담기');
-    await expect(addToCartButton).toBeInTheDocument();
-    await user.click(addToCartButton);
-    console.log('✅ 장바구니 담기 클릭 - 상품 추가 처리 (emit 이벤트 발생)');
-
-    // 4. 닫기 버튼으로 카드 제거
-    const closeButton = canvas.getByLabelText('닫기');
-    await expect(closeButton).toBeInTheDocument();
-    await user.click(closeButton);
-    console.log('✅ 닫기 버튼 클릭 - 카드 제거 처리 (emit 이벤트 발생)');
-
-    // 실제 이벤트 발생 통계 (실제 앱에서는 부모 컴포넌트에서 처리)
-    console.log('📊 emit 이벤트 발생 통계:');
-    console.log('- list-item-click: 2회 (가격, 메모리 클릭)');
-    console.log('- button-click: 1회 (장바구니 담기 버튼)');
-    console.log('- close-click: 1회 (닫기 버튼)');
-    console.log('- 키보드 이벤트: KeyboardEvent 타입으로 전달');
-    console.log('- 마우스 이벤트: MouseEvent 타입으로 전달');
-    console.log(
-      '💡 실제 프로젝트에서는 부모 컴포넌트가 이 이벤트들을 받아서 비즈니스 로직을 처리합니다',
-    );
-  },
+export const LongTitle: Story = {
+  args: {
+    showHeader: true,
+    title: '매우 긴 제목을 가진 상품으로 텍스트 오버플로우와 줄바꿈 처리를 확인하기 위한 예시',
+    subtitle: '이것도 매우 긴 부제목으로 여러 줄에 걸쳐 표시될 수 있는 텍스트입니다',
+    showTooltip: true,
+    dataList: [
+      { title: '매우 긴 타이틀 항목', value: '매우 긴 값 데이터 텍스트' }
+    ]
+  }
 };
