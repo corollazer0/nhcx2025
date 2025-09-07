@@ -32,28 +32,7 @@ const handleItemClick = (item: any, index: number, event: MouseEvent | KeyboardE
 <template>
   <div>
     <HelloWorld msg="Vite + Vue" />
-    <hr />
     <Breadcrumb :items="breadcrumbItems" :max-visible-items="5" />
-    <hr />
-    <GeneralListExample />
-    <hr />
-    <!-- 기본 사용 (Figma 원본과 동일) -->
-    <GeneralList />
-    <hr />
-    <!-- 커스텀 데이터 -->
-    <GeneralList
-      labelText="NEW"
-      titleText="iPhone 15 Pro"
-      buttonText="구매하기"
-      :listItems="[
-        { title: '가격', data: '1,550,000원' },
-        { title: '용량', data: '256GB' },
-      ]"
-      @button-click="handlePurchase"
-      @close-click="handleClose"
-      @list-item-click="handleItemClick"
-    />
-    <hr />
     <Cta primaryText="가입하기" ratio="cta-5:5" secondaryText="취소" type="basic" />
   </div>
 </template>
