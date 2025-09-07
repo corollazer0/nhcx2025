@@ -182,18 +182,13 @@ describe('GeneralList.vue', () => {
     });
   });
 
-  describe('모든 props가 false인 경우', () => {
-    it('최소한의 구조만 렌더링됨', () => {
+  describe('최소 구조 렌더링', () => {
+    it('props가 없을 때 최소한의 구조만 렌더링됨', () => {
       factory({
-        label: false,
-        subText: false,
-        list: false,
-        button: false,
-        top: false,
-        iconClose: false,
-        title: false,
-        buttonMessage: false,
-        message: false,
+        showHeader: false,
+        labels: [],
+        dataList: [],
+        showCloseButton: false,
       });
 
       // 기본 컨테이너는 존재해야 함
