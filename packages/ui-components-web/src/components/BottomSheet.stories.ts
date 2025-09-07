@@ -233,7 +233,7 @@ export const AccountType: Story = {
         accounts: [
           {
             id: 'acc1',
-            bankName: '우리은행',
+            bankName: 'NH농협은행',
             accountName: '입출금통장',
             accountNumber: '1002-123-456789',
             logoUrl: '',
@@ -246,17 +246,10 @@ export const AccountType: Story = {
         accounts: [
           {
             id: 'acc2',
-            bankName: '신한은행',
-            accountName: '입출금통장',
-            accountNumber: '110-123-456789',
-            logoUrl: ''
-          },
-          {
-            id: 'acc3',
             bankName: 'NH농협은행',
             accountName: '예금통장',
             accountNumber: '987-65-432109',
-            logoUrl: ''
+            logoUrl: '/src/assets/nh-logo.svg'
           }
         ]
       }
@@ -325,7 +318,7 @@ export const Playground: Story = {
         accounts: [
           {
             id: 'acc1',
-            bankName: '우리은행',
+            bankName: 'NH농협은행',
             accountName: '입출금통장',
             accountNumber: '1002-123-456789',
             logoUrl: '',
@@ -338,17 +331,10 @@ export const Playground: Story = {
         accounts: [
           {
             id: 'acc2',
-            bankName: '신한은행',
-            accountName: '입출금통장',
-            accountNumber: '110-123-456789',
-            logoUrl: ''
-          },
-          {
-            id: 'acc3',
             bankName: 'NH농협은행',
             accountName: '예금통장',
             accountNumber: '987-65-432109',
-            logoUrl: ''
+            logoUrl: '/src/assets/nh-logo.svg'
           }
         ]
       }

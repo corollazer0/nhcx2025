@@ -141,7 +141,20 @@
                   @click="handleAccountClick(account)"
                 >
                   <div class="bottom-sheet__account-logo">
-                    <img :src="account.logoUrl" :alt="account.bankName" />
+                    <NHLogo v-if="account.bankName.includes('NH') || account.bankName.includes('농협')" />
+                    <img 
+                      v-else-if="account.logoUrl" 
+                      :src="account.logoUrl" 
+                      :alt="account.bankName"
+                      @error="handleImageError"
+                    />
+                    <div 
+                      v-else 
+                      class="bottom-sheet__account-logo-fallback"
+                      :style="{ backgroundColor: getBankColor(account.bankName) }"
+                    >
+                      {{ getBankInitial(account.bankName) }}
+                    </div>
                   </div>
                   <div class="bottom-sheet__account-info">
                     <div class="bottom-sheet__account-main">
@@ -202,6 +215,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue';
+import NHLogo from './NHLogo.vue';
 
 interface PickerItem {
   label: string;
@@ -407,6 +421,30 @@ const handleAccountSelect = (account: Account) => {
 
 const handleFavoriteClick = (account: Account) => {
   emit('favorite-toggle', account);
+};
+
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement;
+  img.style.display = 'none';
+  
+  // Show fallback
+  const logoDiv = img.parentElement;
+  if (logoDiv) {
+    const fallbackDiv = document.createElement('div');
+    fallbackDiv.className = 'bottom-sheet__account-logo-fallback';
+    fallbackDiv.style.backgroundColor = getBankColor(img.alt);
+    fallbackDiv.textContent = getBankInitial(img.alt);
+    logoDiv.appendChild(fallbackDiv);
+  }
+};
+
+const getBankInitial = (bankName: string): string => {
+  if (bankName.includes('NH') || bankName.includes('농협')) return 'NH';
+  return 'NH';
+};
+
+const getBankColor = (bankName: string): string => {
+  return '#015aac';
 };
 
 // Watchers
@@ -794,6 +832,19 @@ watch(() => props.initialAmount, (newAmount) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.bottom-sheet__account-logo-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-family-pretendard);
+  letter-spacing: -0.28px;
 }
 
 .bottom-sheet__account-info {
