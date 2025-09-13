@@ -1,9 +1,9 @@
 <template>
   <div class="indicator" data-testid="indicator">
-    <!-- Text navigation variant -->
-    <template v-if="variant === 'text'">
-      <!-- Navigation arrows and text -->
-      <div class="indicator__navigation" @click="handleNavClick">
+    <!-- Number variant -->
+    <template v-if="variant === 'number'">
+      <div class="indicator__paging">
+        <!-- Left arrow -->
         <button
           class="indicator__nav-button"
           :class="{ 'indicator__nav-button--disabled': disabled || current <= 1 }"
@@ -11,13 +11,19 @@
           :disabled="disabled || current <= 1"
           data-testid="indicator-prev"
         >
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" class="indicator__nav-icon">
-            <path d="M5 1.5L2.5 4L5 6.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="indicator__nav-icon">
+            <path d="M10 4L6 8L10 12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
         
-        <span class="indicator__text">{{ displayText }}</span>
+        <!-- Number display -->
+        <div class="indicator__number-display">
+          <span class="indicator__current">{{ current }}</span>
+          <div class="indicator__dash"></div>
+          <span class="indicator__total">{{ total }}</span>
+        </div>
         
+        <!-- Right arrow -->
         <button
           class="indicator__nav-button"
           :class="{ 'indicator__nav-button--disabled': disabled || current >= total }"
@@ -25,29 +31,22 @@
           :disabled="disabled || current >= total"
           data-testid="indicator-next"
         >
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" class="indicator__nav-icon">
-            <path d="M3 1.5L5.5 4L3 6.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="indicator__nav-icon">
+            <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
       </div>
       
-      <!-- Play/Pause button -->
+      <!-- Stop button -->
       <button
-        class="indicator__play-button"
-        :class="{ 'indicator__play-button--paused': !isPlaying }"
-        @click="handlePlayClick"
+        class="indicator__stop-button"
+        @click="handleStopClick"
         :disabled="disabled"
-        data-testid="indicator-play"
+        data-testid="indicator-stop"
       >
-        <!-- Play icon -->
-        <svg v-if="!isPlaying" width="12" height="12" viewBox="0 0 12 12" fill="none" class="indicator__play-icon">
-          <path d="M4 2.5L9 6L4 9.5V2.5Z" fill="currentColor" />
-        </svg>
-        
-        <!-- Pause icon -->
-        <svg v-else width="12" height="12" viewBox="0 0 12 12" fill="none" class="indicator__play-icon">
-          <rect x="3" y="2" width="2" height="8" fill="currentColor" />
-          <rect x="7" y="2" width="2" height="8" fill="currentColor" />
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" class="indicator__stop-icon">
+          <rect x="1.5" y="1.5" width="2" height="5" fill="currentColor" />
+          <rect x="4.5" y="1.5" width="2" height="5" fill="currentColor" />
         </svg>
       </button>
     </template>
@@ -66,23 +65,16 @@
         />
       </div>
       
-      <!-- Play/Pause button for dot variant -->
+      <!-- Stop button for dot variant -->
       <button
-        class="indicator__play-button indicator__play-button--dot-variant"
-        :class="{ 'indicator__play-button--paused': !isPlaying }"
-        @click="handlePlayClick"
+        class="indicator__stop-button indicator__stop-button--dot-variant"
+        @click="handleStopClick"
         :disabled="disabled"
-        data-testid="indicator-play"
+        data-testid="indicator-stop"
       >
-        <!-- Play icon -->
-        <svg v-if="!isPlaying" width="12" height="12" viewBox="0 0 12 12" fill="none" class="indicator__play-icon">
-          <path d="M4 2.5L9 6L4 9.5V2.5Z" fill="currentColor" />
-        </svg>
-        
-        <!-- Pause icon -->
-        <svg v-else width="12" height="12" viewBox="0 0 12 12" fill="none" class="indicator__play-icon">
-          <rect x="3" y="2" width="2" height="8" fill="currentColor" />
-          <rect x="7" y="2" width="2" height="8" fill="currentColor" />
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="indicator__stop-icon">
+          <rect x="2.5" y="2.5" width="2" height="7" fill="currentColor" />
+          <rect x="7.5" y="2.5" width="2" height="7" fill="currentColor" />
         </svg>
       </button>
     </template>
@@ -93,36 +85,25 @@
 import { computed } from 'vue';
 
 interface IndicatorProps {
-  variant?: 'text' | 'dot';
+  variant?: 'number' | 'dot';
   current?: number;
   total?: number;
   disabled?: boolean;
-  isPlaying?: boolean;
 }
 
 const props = withDefaults(defineProps<IndicatorProps>(), {
-  variant: 'text',
+  variant: 'number',
   current: 1,
   total: 3,
   disabled: false,
-  isPlaying: false,
 });
 
 const emit = defineEmits<{
   'navigate-prev': [];
   'navigate-next': [];
   'navigate-to': [page: number];
-  'toggle-play': [isPlaying: boolean];
-  'nav-click': [event: MouseEvent];
+  stop: [];
 }>();
-
-const displayText = computed(() => `${props.current} | ${props.total}`);
-
-const handleNavClick = (event: MouseEvent) => {
-  if (!props.disabled) {
-    emit('nav-click', event);
-  }
-};
 
 const handlePrevClick = (event: MouseEvent) => {
   event.stopPropagation();
@@ -144,17 +125,17 @@ const handleDotClick = (page: number) => {
   }
 };
 
-const handlePlayClick = (event: MouseEvent) => {
+const handleStopClick = (event: MouseEvent) => {
   event.stopPropagation();
   if (!props.disabled) {
-    emit('toggle-play', !props.isPlaying);
+    emit('stop');
   }
 };
 </script>
 
 <style scoped>
 .indicator {
-  --color-bg-indicator-default: #111111;
+  --color-bg-indicator-number-default: rgba(17, 17, 17, 0.4);
   --color-text-indicator-default: #ffffff;
   --color-bg-indicator-dot-active: #19973c;
   --color-bg-indicator-dot-default: #d3d3d3;
@@ -165,38 +146,57 @@ const handlePlayClick = (event: MouseEvent) => {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   user-select: none;
 }
 
-.indicator__navigation {
-  background-color: var(--color-bg-indicator-default);
+.indicator__paging {
+  background-color: var(--color-bg-indicator-number-default);
   border-radius: var(--border-radius-circle);
   box-sizing: border-box;
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-  height: 24px;
+  gap: 2px;
+  padding: 1px 4px;
+  height: 20px;
 }
 
-.indicator__navigation:hover {
-  opacity: 0.8;
+.indicator__number-display {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 2px;
 }
 
-.indicator__text {
+.indicator__current {
   font-family: var(--font-pretendard-regular);
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
+  letter-spacing: -0.24px;
   color: var(--color-text-indicator-default);
   white-space: nowrap;
-  margin: 0;
-  flex-shrink: 0;
+  opacity: 1;
+}
+
+.indicator__total {
+  font-family: var(--font-pretendard-regular);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: -0.24px;
+  color: var(--color-text-indicator-default);
+  white-space: nowrap;
+  opacity: 0.6;
+}
+
+.indicator__dash {
+  width: 1px;
+  height: 6px;
+  background-color: var(--color-text-indicator-default);
+  opacity: 0.6;
 }
 
 .indicator__nav-button {
@@ -208,8 +208,8 @@ const handlePlayClick = (event: MouseEvent) => {
   align-items: center;
   justify-content: center;
   transition: opacity 0.2s ease;
-  width: 8px;
-  height: 8px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 }
 
@@ -265,41 +265,44 @@ const handlePlayClick = (event: MouseEvent) => {
   cursor: not-allowed;
 }
 
-.indicator__play-button {
-  background-color: var(--color-bg-indicator-default);
+.indicator__stop-button {
+  background-color: var(--color-bg-indicator-number-default);
   border: none;
   border-radius: 50%;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
+  width: 20px;
+  height: 20px;
+  padding: 6px;
   transition: opacity 0.2s ease;
   flex-shrink: 0;
 }
 
-.indicator__play-button--dot-variant {
+.indicator__stop-button--dot-variant {
   background-color: transparent;
+  width: 12px;
+  height: 12px;
+  padding: 2px;
 }
 
-.indicator__play-button:hover:not(:disabled) {
+.indicator__stop-button:hover:not(:disabled) {
   opacity: 0.8;
 }
 
-.indicator__play-button:disabled {
+.indicator__stop-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.indicator__play-icon {
+.indicator__stop-icon {
   color: var(--color-text-indicator-default);
   display: block;
   flex-shrink: 0;
 }
 
-.indicator__play-button--dot-variant .indicator__play-icon {
+.indicator__stop-button--dot-variant .indicator__stop-icon {
   color: var(--color-icon-gray600);
 }
 </style>
