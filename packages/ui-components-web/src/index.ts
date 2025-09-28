@@ -42,6 +42,13 @@ export { default as Toast } from './components/Toast.vue'
 export { default as Tooltip } from './components/Tooltip.vue'
 export { default as TooltipIcon } from './components/TooltipIcon.vue'
 
+// Funnel 관련 컴포넌트
+export { default as Funnel } from './components/Funnel.vue'
+export { default as FunnelStep } from './components/FunnelStep.vue'
+
+// Composables
+export * from './composables'
+
 // 아이콘 컴포넌트
 export { default as ArrowDownIcon } from './components/icons/ArrowDownIcon.vue'
 export { default as ArrowUpIcon } from './components/icons/ArrowUpIcon.vue'
@@ -102,6 +109,10 @@ import Toast from './components/Toast.vue'
 import Tooltip from './components/Tooltip.vue'
 import TooltipIcon from './components/TooltipIcon.vue'
 
+// Funnel 관련 컴포넌트
+import Funnel from './components/Funnel.vue'
+import FunnelStep from './components/FunnelStep.vue'
+
 // 아이콘들
 import ArrowDownIcon from './components/icons/ArrowDownIcon.vue'
 import ArrowUpIcon from './components/icons/ArrowUpIcon.vue'
@@ -158,6 +169,8 @@ const components = {
   Toast,
   Tooltip,
   TooltipIcon,
+  Funnel,
+  FunnelStep,
   ArrowDownIcon,
   ArrowUpIcon,
   IconArrowDown,
