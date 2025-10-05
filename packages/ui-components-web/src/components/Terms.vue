@@ -10,44 +10,16 @@
       <div class="terms__header" @click="handleHeaderClick">
         <div class="terms__check-section">
           <!-- Checkbox -->
-          <div 
-            class="terms__checkbox"
-            :class="checkboxClasses"
-            data-testid="terms-checkbox"
-            role="checkbox"
-            :aria-checked="checked"
-            :aria-disabled="disabled"
-            tabindex="0"
+          <Checkbox
+            :show-text="false"
+            size="sm"
+            :state="checkboxState"
             @click.stop="handleCheckboxClick"
-            @keydown.space.prevent="handleCheckboxClick"
-            @keydown.enter.prevent="handleCheckboxClick"
-          >
-            <div 
-              v-show="checked"
-              class="terms__check-icon"
-              data-testid="terms-check-icon"
-            >
-              <!-- Check SVG icon -->
-              <svg 
-                width="9" 
-                height="7" 
-                viewBox="0 0 9 7" 
-                fill="none" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path 
-                  d="M1 3.5L3.5 6L8 1.5" 
-                  stroke="currentColor" 
-                  stroke-width="1.2" 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-          
+            data-testid="terms-checkbox"
+          />
+
           <!-- Title text -->
-          <div 
+          <div
             class="terms__title"
             data-testid="terms-title"
           >
@@ -65,18 +37,19 @@
           :aria-label="state === 'open' ? '약관 접기' : '약관 펼치기'"
           @click.stop="handleArrowClick"
         >
-          <svg 
-            width="5" 
-            height="10.5" 
-            viewBox="0 0 5 10.5" 
-            fill="none" 
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            class="terms__arrow-icon"
           >
-            <path 
-              d="M0.75 1.5L4.25 5.25L0.75 9" 
-              stroke="currentColor" 
-              stroke-width="1.2" 
-              stroke-linecap="round" 
+            <path
+              d="M9 18L15 12L9 6"
+              stroke="#111111"
+              stroke-width="2"
+              stroke-linecap="round"
               stroke-linejoin="round"
             />
           </svg>
@@ -91,20 +64,28 @@
       ></div>
       
       <!-- Terms list when expanded -->
-      <div 
+      <div
         v-if="state === 'open' && items.length > 0"
         class="terms__list"
         data-testid="terms-list"
       >
-        <div 
+        <div
           v-for="(item, index) in items"
           :key="index"
           class="terms__list-item"
           data-testid="terms-list-item"
         >
           <div class="terms__item-check-section">
-            <!-- Small checkbox for list items -->
-            <div 
+            <!-- Bullet point for bullet type -->
+            <div
+              v-if="item.type === 'bullet'"
+              class="terms__item-bullet"
+              data-testid="terms-item-bullet"
+            >
+            </div>
+            <!-- Checkbox for checkbox type (default) -->
+            <div
+              v-else
               class="terms__item-checkbox"
               :class="{ 'terms__item-checkbox--checked': item.checked }"
               data-testid="terms-item-checkbox"
@@ -116,39 +97,39 @@
               @keydown.space.prevent="handleItemCheckClick(index)"
               @keydown.enter.prevent="handleItemCheckClick(index)"
             >
-              <div 
+              <div
                 v-show="item.checked"
                 class="terms__item-check-icon"
                 data-testid="terms-item-check-icon"
               >
                 <!-- Small check SVG icon -->
-                <svg 
-                  width="9" 
-                  height="7" 
-                  viewBox="0 0 9 7" 
-                  fill="none" 
+                <svg
+                  width="9"
+                  height="7"
+                  viewBox="0 0 9 7"
+                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path 
-                    d="M1 3.5L3.5 6L8 1.5" 
-                    stroke="currentColor" 
-                    stroke-width="1.2" 
-                    stroke-linecap="round" 
+                  <path
+                    d="M1 3.5L3.5 6L8 1.5"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
                     stroke-linejoin="round"
                   />
                 </svg>
               </div>
             </div>
-            
+
             <!-- Item text -->
-            <div 
+            <div
               class="terms__item-text"
               data-testid="terms-item-text"
             >
               {{ item.text }}
             </div>
           </div>
-          
+
           <!-- Optional arrow for individual items -->
           <button
             v-if="item.showArrow"
@@ -157,18 +138,18 @@
             :aria-label="`${item.text} 약관 보기`"
             @click="handleItemArrowClick(index)"
           >
-            <svg 
-              width="4" 
-              height="8" 
-              viewBox="0 0 4 8" 
-              fill="none" 
+            <svg
+              width="4"
+              height="8"
+              viewBox="0 0 4 8"
+              fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path 
-                d="M0.5 1L3 4L0.5 7" 
-                stroke="currentColor" 
-                stroke-width="1" 
-                stroke-linecap="round" 
+              <path
+                d="M0.5 1L3 4L0.5 7"
+                stroke="currentColor"
+                stroke-width="1"
+                stroke-linecap="round"
                 stroke-linejoin="round"
               />
             </svg>
@@ -181,12 +162,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import Checkbox from './Checkbox.vue';
 
 interface TermsItem {
   text: string;
   checked?: boolean;
   disabled?: boolean;
   showArrow?: boolean;
+  type?: 'checkbox' | 'bullet';
 }
 
 interface TermsProps {
@@ -224,14 +207,12 @@ const termsClasses = computed(() => [
   }
 ]);
 
-const checkboxClasses = computed(() => [
-  'terms__checkbox--sm',
-  'terms__checkbox--default',
-  {
-    'terms__checkbox--checked': props.checked,
-    'terms__checkbox--disabled': props.disabled
+const checkboxState = computed(() => {
+  if (props.disabled) {
+    return props.checked ? 'select-disabled' : 'disabled';
   }
-]);
+  return props.checked ? 'selected' : 'default';
+});
 
 const arrowClasses = computed(() => [
   {
@@ -306,56 +287,12 @@ const handleItemArrowClick = (index: number) => {
 
 .terms__check-section {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   flex: 1;
   min-width: 0;
 }
 
-/* Checkbox styles */
-.terms__checkbox {
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--color-border-checkbox-basic-default);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  padding: 4px;
-  box-sizing: border-box;
-}
-
-.terms__checkbox:hover:not(.terms__checkbox--disabled) {
-  border-color: var(--color-text-font-1);
-}
-
-.terms__checkbox:focus {
-  outline: 2px solid var(--color-text-font-1);
-  outline-offset: 2px;
-}
-
-.terms__checkbox--checked {
-  border-color: var(--color-border-checkbox-basic-default);
-  background-color: transparent;
-}
-
-.terms__checkbox--disabled {
-  border-color: #e1e1e1;
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.terms__check-icon {
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-border-checkbox-basic-default);
-}
 
 /* Title styles */
 .terms__title {
@@ -366,6 +303,7 @@ const handleItemArrowClick = (index: number) => {
   letter-spacing: -0.32px;
   flex: 1;
   min-width: 0;
+  text-align: left;
 }
 
 /* Arrow button styles */
@@ -378,9 +316,12 @@ const handleItemArrowClick = (index: number) => {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-icon-gray600);
+  color: #111111;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
 }
 
 .terms__arrow-btn:hover {
@@ -395,6 +336,15 @@ const handleItemArrowClick = (index: number) => {
 
 .terms__arrow-btn--rotated {
   transform: rotate(90deg);
+}
+
+.terms__arrow-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.terms__arrow-icon path {
+  stroke: #111111;
 }
 
 /* Divider styles */
@@ -425,9 +375,19 @@ const handleItemArrowClick = (index: number) => {
 .terms__item-check-section {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
   min-width: 0;
+}
+
+/* Bullet point styles */
+.terms__item-bullet {
+  width: 4px;
+  height: 4px;
+  background-color: #707070;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 10px;
 }
 
 /* Small checkbox styles for list items */
@@ -469,16 +429,13 @@ const handleItemArrowClick = (index: number) => {
 /* Item text styles */
 .terms__item-text {
   color: var(--color-text-font-3);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 22px;
-  letter-spacing: -0.28px;
+  line-height: 24px;
+  letter-spacing: -0.3px;
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: stretch;
+  text-align: left;
 }
 
 /* Item arrow button styles */

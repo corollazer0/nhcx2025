@@ -1,15 +1,12 @@
 <template>
-  <div 
-    class="navigation"
-    data-testid="navigation"
-  >
+  <div class="navigation" data-testid="navigation">
     <!-- Previous Button -->
-    <div 
-      v-if="previous" 
+    <div
+      v-if="previous"
       class="navigation__btn-container navigation__btn-container--left"
       data-name="Btn"
     >
-      <div 
+      <div
         class="navigation__icon-container"
         @click="$emit('previous', $event)"
         tabindex="0"
@@ -19,36 +16,44 @@
         @keydown.space.prevent="$emit('previous', $event)"
       >
         <div class="navigation__icon-wrapper">
-          <img 
-            :src="previousIcon"
-            alt=""
-            class="navigation__icon"
-          />
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 18L4 12L10 6"
+              stroke="#111111"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M20 12H4"
+              stroke="#111111"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </div>
       </div>
     </div>
 
     <!-- Title Section -->
-    <div 
-      class="navigation__text-container"
-      data-name="Text"
-    >
-      <div 
-        v-if="title" 
-        class="navigation__title"
-      >
+    <div class="navigation__text-container" data-name="Text">
+      <div v-if="title" class="navigation__title">
         <p class="navigation__title-text">{{ title1 }}</p>
       </div>
     </div>
 
     <!-- Right Button Section -->
-    <div 
-      class="navigation__btn-container navigation__btn-container--right"
-      data-name="Btn"
-    >
+    <div class="navigation__btn-container navigation__btn-container--right" data-name="Btn">
       <!-- CS Center Icon -->
-      <div 
-        v-if="cs" 
+      <div
+        v-if="cs"
         class="navigation__icon-container"
         @click="$emit('cs', $event)"
         tabindex="0"
@@ -57,15 +62,12 @@
         @keydown.enter="$emit('cs', $event)"
         @keydown.space.prevent="$emit('cs', $event)"
       >
-        <IconCsCenter 
-          :aria-label="csAriaLabel"
-          class="navigation__icon navigation__icon--svg"
-        />
+        <IconCsCenter :aria-label="csAriaLabel" class="navigation__icon navigation__icon--svg" />
       </div>
 
       <!-- Cancel Text -->
-      <div 
-        v-if="cancel" 
+      <div
+        v-if="cancel"
         class="navigation__cancel-text"
         @click="$emit('cancel', $event)"
         tabindex="0"
@@ -103,7 +105,7 @@ const props = withDefaults(defineProps<NavigationProps>(), {
   cancel: true,
   previousAriaLabel: '이전 페이지로 이동',
   csAriaLabel: '고객센터',
-  cancelAriaLabel: '취소'
+  cancelAriaLabel: '취소',
 });
 
 const emit = defineEmits<{
@@ -111,9 +113,6 @@ const emit = defineEmits<{
   cs: [event: MouseEvent | KeyboardEvent];
   cancel: [event: MouseEvent | KeyboardEvent];
 }>();
-
-// 이전 버튼 아이콘 (임시로 URL 유지, 추후 IconPrevious 컴포넌트로 대체 예정)
-const previousIcon = "http://localhost:3845/assets/f2124df9be5df568d9ee2dfe26bca84b898ba10b.svg";
 </script>
 
 <style scoped>
@@ -123,7 +122,7 @@ const previousIcon = "http://localhost:3845/assets/f2124df9be5df568d9ee2dfe26bca
   --color-text-font-1: #121212;
   --color-text-font-2: #343434;
   --color-icon-gray900: #111111;
-  
+
   /* Layout matching Figma exactly */
   background-color: var(--color-bg-default);
   box-sizing: border-box;
@@ -299,12 +298,12 @@ const previousIcon = "http://localhost:3845/assets/f2124df9be5df568d9ee2dfe26bca
 }
 
 /* Disabled state (when no event handler) */
-.navigation__icon-container:not([tabindex="0"]) {
+.navigation__icon-container:not([tabindex='0']) {
   cursor: default;
   opacity: 0.6;
 }
 
-.navigation__cancel-text:not([tabindex="0"]) {
+.navigation__cancel-text:not([tabindex='0']) {
   cursor: default;
   opacity: 0.6;
 }

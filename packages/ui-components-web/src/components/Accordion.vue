@@ -369,7 +369,7 @@ const visibleItems = computed(() => {
   gap: 8px;
   align-items: flex-start;
   justify-content: center;
-  padding: 0 16px;
+  padding: 0 24px;
   position: relative;
   flex-shrink: 0;
   width: 100%;
@@ -395,6 +395,7 @@ const visibleItems = computed(() => {
   justify-content: flex-start;
   position: relative;
   flex-shrink: 0;
+  width: 100%;
 }
 
 /* Accordion Item */
@@ -416,7 +417,8 @@ const visibleItems = computed(() => {
   align-items: center;
   justify-content: center;
   position: relative;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .accordion__item-title {
@@ -435,6 +437,8 @@ const visibleItems = computed(() => {
 .accordion__item-title p {
   line-height: 22px;
   margin: 0;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 /* Item Icons */
@@ -514,6 +518,8 @@ const visibleItems = computed(() => {
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  flex: 1;
+  min-width: 0;
 }
 
 .accordion__item-bullet {
@@ -541,10 +547,16 @@ const visibleItems = computed(() => {
   min-height: 1px;
   min-width: 1px;
   color: #505050;
+  text-align: left;
+  width: 100%;
+  max-width: 100%;
 }
 
 .accordion__item-title--bullet p {
   color: #505050;
+  text-align: left;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 /* Responsive */
