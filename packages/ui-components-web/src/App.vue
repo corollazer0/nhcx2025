@@ -1,53 +1,47 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-
-import Breadcrumb from './components/Breadcrumb.vue';
-import GeneralList from './components/GeneralList.vue';
-import GeneralListExample from './components/GeneralListExample.vue';
-import Cta from './components/Cta.vue';
-
-const breadcrumbItems = ref([
-  { name: '홈', path: '/' },
-  { name: '1Depth', path: '/1depth' },
-  { name: '2Depth', path: '/1depth/2depth' },
-  { name: '3Depth', path: '/1depth/2depth/3depth' },
-  { name: '4Depth', path: '/1depth/2depth/3depth/4depth' },
-  { name: '5Depth', path: '/1depth/2depth/3depth/4depth/5depth' },
-]);
-
-// GeneralList 이벤트 핸들러 함수들
-const handlePurchase = (event: MouseEvent) => {
-  console.log('구매 버튼 클릭:', event);
-};
-
-const handleClose = (event: MouseEvent) => {
-  console.log('닫기 버튼 클릭:', event);
-};
-
-const handleItemClick = (item: any, index: number, event: MouseEvent | KeyboardEvent) => {
-  console.log('리스트 아이템 클릭:', { item, index, eventType: event.constructor.name });
-};
+// Router view를 사용하므로 기존 컴포넌트 import는 제거
 </script>
 
 <template>
-  <div>
-    <HelloWorld msg="Vite + Vue" />
-    <Breadcrumb :items="breadcrumbItems" :max-visible-items="5" />
-    <Cta primaryText="가입하기" ratio="cta-5:5" secondaryText="취소" type="basic" />
+  <div id="app">
+    <!-- Router에서 관리하는 페이지들이 여기에 렌더링됩니다 -->
+    <router-view />
   </div>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+#app {
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Pretendard', Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #121212;
+  background-color: #ffffff;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+/* 글로벌 스타일 재설정 */
+* {
+  box-sizing: border-box;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* 반응형 컨테이너 */
+@media (max-width: 768px) {
+  #app {
+    font-size: 14px;
+  }
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  #app {
+    color: #ffffff;
+    background-color: #1a1a1a;
+  }
 }
 </style>
