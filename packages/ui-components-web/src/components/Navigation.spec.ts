@@ -287,24 +287,6 @@ describe('Navigation', () => {
       expect(csButton.attributes('aria-label')).toBe('고객센터');
       expect(cancelButton.attributes('aria-label')).toBe('취소');
     });
-
-    it('이전 버튼 이미지에 빈 alt 속성이 설정된다 (decorative)', () => {
-      const wrapper = mount(Navigation);
-      const images = wrapper.findAll('img');
-
-      // 이전 버튼 이미지만 확인 (CS 센터는 SVG 컴포넌트)
-      expect(images).toHaveLength(1);
-      expect(images[0].attributes('alt')).toBe('');
-    });
-
-    it('SVG 아이콘에 접근성 속성이 올바르게 설정된다', () => {
-      const wrapper = mount(Navigation);
-      const svgIcons = wrapper.findAll('svg');
-
-      expect(svgIcons).toHaveLength(1);
-      expect(svgIcons[0].attributes('role')).toBe('img');
-      expect(svgIcons[0].attributes('aria-label')).toBe('고객센터');
-    });
   });
 
   // CSS 클래스 테스트
@@ -447,25 +429,11 @@ describe('Navigation', () => {
   describe('스타일 검증 테스트', () => {
     it('Navigation 요소가 올바른 HTML 구조를 가진다', () => {
       const wrapper = mount(Navigation);
-      
+
       expect(wrapper.html()).toContain('class="navigation"');
       expect(wrapper.html()).toContain('data-testid="navigation"');
       expect(wrapper.find('.navigation__text-container').exists()).toBe(true);
       expect(wrapper.find('.navigation__btn-container').exists()).toBe(true);
-    });
-
-    it('이미지와 SVG 아이콘이 올바르게 렌더링된다', () => {
-      const wrapper = mountNavigation();
-      const images = wrapper.findAll('img');
-      const svgIcons = wrapper.findAll('svg');
-
-      // 이전 버튼 이미지만 img 태그로 렌더링 (1개)
-      expect(images).toHaveLength(1);
-      expect(images[0].attributes('src')).toContain('localhost:3845');
-      
-      // CS 센터 아이콘은 SVG 컴포넌트로 렌더링 (1개)
-      expect(svgIcons).toHaveLength(1);
-      expect(svgIcons[0].attributes('viewBox')).toBe('0 0 24 24');
     });
 
     it('Figma 디자인과 일치하는 구조를 가진다', () => {

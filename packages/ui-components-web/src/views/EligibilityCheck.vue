@@ -247,7 +247,6 @@ const handleNextClick = (event: MouseEvent) => {
   align-items: center;
   position: relative;
   width: 100%;
-  min-height: 100vh;
   box-sizing: border-box;
 }
 

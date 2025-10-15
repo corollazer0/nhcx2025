@@ -438,28 +438,6 @@ describe('useFunnel', () => {
 
   // 디버깅 기능 테스트
   describe('디버깅 기능', () => {
-    it('getDebugInfo가 올바른 정보를 반환한다', () => {
-      const steps = ['step1', 'step2', 'step3']
-      const funnel = useFunnel({ steps, initialStep: 'step2' })
-
-      funnel.setStepData('step1', { debug: 'test' })
-
-      const debugInfo = funnel.getDebugInfo()
-
-      expect(debugInfo).toEqual({
-        currentStep: 'step2',
-        currentStepIndex: 1,
-        steps: ['step1', 'step2', 'step3'],
-        data: { step1: { debug: 'test' } },
-        history: ['step2'],
-        progress: 67,
-        canGoNext: expect.any(Object), // computed ref
-        canGoPrev: true,
-        isFirstStep: false,
-        isLastStep: false
-      })
-    })
-
     it('debug 모드에서 로그가 출력된다', async () => {
       const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 

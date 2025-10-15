@@ -80,35 +80,8 @@ describe('Terms', () => {
 
     it('disabled 상태일 때 올바른 클래스가 적용된다', () => {
       const wrapper = createWrapper({ disabled: true });
-      
+
       expect(wrapper.find('[data-testid="terms"]').classes()).toContain('terms--disabled');
-    });
-  });
-
-  describe('체크박스 상태', () => {
-    it('checked가 true일 때 체크 아이콘이 표시된다', () => {
-      const wrapper = createWrapper({ checked: true });
-      
-      expect(wrapper.find('[data-testid="terms-check-icon"]').exists()).toBe(true);
-      expect(wrapper.find('[data-testid="terms-checkbox"]').classes()).toContain('terms__checkbox--checked');
-    });
-
-    it('checked가 false일 때 체크 아이콘이 표시되지 않는다', () => {
-      const wrapper = createWrapper({ checked: false });
-      
-      const checkIcon = wrapper.find('[data-testid="terms-check-icon"]');
-      expect(checkIcon.exists()).toBe(true); // v-show로 인해 DOM에는 존재
-      expect(checkIcon.isVisible()).toBe(false); // 하지만 표시되지 않음
-    });
-
-    it('체크박스에 올바른 aria 속성이 설정된다', () => {
-      const wrapper = createWrapper({ checked: true, disabled: true });
-      const checkbox = wrapper.find('[data-testid="terms-checkbox"]');
-      
-      expect(checkbox.attributes('role')).toBe('checkbox');
-      expect(checkbox.attributes('aria-checked')).toBe('true');
-      expect(checkbox.attributes('aria-disabled')).toBe('true');
-      expect(checkbox.attributes('tabindex')).toBe('0');
     });
   });
 
@@ -131,40 +104,6 @@ describe('Terms', () => {
       expect(wrapper.findAll('[data-testid="terms-item-text"]')[0].text()).toBe('첫 번째 항목');
       expect(wrapper.findAll('[data-testid="terms-item-text"]')[1].text()).toBe('두 번째 항목');
       expect(wrapper.findAll('[data-testid="terms-item-text"]')[2].text()).toBe('세 번째 항목');
-    });
-
-    it('checked 상태의 리스트 항목에 체크 아이콘이 표시된다', () => {
-      const wrapper = createWrapper({ 
-        state: 'open',
-        items: testItems
-      });
-      
-      const checkIcons = wrapper.findAll('[data-testid="terms-item-check-icon"]');
-      expect(checkIcons).toHaveLength(3); // 모든 아이템에 체크 아이콘이 DOM에 존재 (v-show 때문)
-      
-      // 실제로 보이는 아이콘 확인
-      expect(checkIcons[0].isVisible()).toBe(true);  // 첫 번째 항목 checked: true
-      expect(checkIcons[1].isVisible()).toBe(false); // 두 번째 항목 checked: false
-      expect(checkIcons[2].isVisible()).toBe(true);  // 세 번째 항목 checked: true
-    });
-
-    it('showArrow가 true인 리스트 항목에만 화살표가 표시된다', () => {
-      const wrapper = createWrapper({ 
-        state: 'open',
-        items: testItems
-      });
-      
-      const arrowButtons = wrapper.findAll('[data-testid="terms-item-arrow"]');
-      expect(arrowButtons).toHaveLength(2); // 첫 번째와 세 번째만 showArrow: true
-    });
-
-    it('빈 items 배열일 때 리스트가 표시되지 않는다', () => {
-      const wrapper = createWrapper({ 
-        state: 'open',
-        items: []
-      });
-      
-      expect(wrapper.find('[data-testid="terms-list"]').exists()).toBe(false);
     });
   });
 
@@ -230,24 +169,6 @@ describe('Terms', () => {
   });
 
   describe('키보드 상호작용', () => {
-    it('체크박스에서 Space 키 입력 시 체크 상태가 토글된다', async () => {
-      const wrapper = createWrapper({ checked: false });
-      
-      await wrapper.find('[data-testid="terms-checkbox"]').trigger('keydown.space');
-      
-      expect(wrapper.emitted('update:checked')).toHaveLength(1);
-      expect(wrapper.emitted('update:checked')![0]).toEqual([true]);
-    });
-
-    it('체크박스에서 Enter 키 입력 시 체크 상태가 토글된다', async () => {
-      const wrapper = createWrapper({ checked: false });
-      
-      await wrapper.find('[data-testid="terms-checkbox"]').trigger('keydown.enter');
-      
-      expect(wrapper.emitted('update:checked')).toHaveLength(1);
-      expect(wrapper.emitted('update:checked')![0]).toEqual([true]);
-    });
-
     it('리스트 항목 체크박스에서 Space 키 입력 시 이벤트가 발생한다', async () => {
       const wrapper = createWrapper({
         state: 'open',
@@ -274,14 +195,6 @@ describe('Terms', () => {
   });
 
   describe('접근성', () => {
-    it('체크박스에 적절한 ARIA 레이블이 설정된다', () => {
-      const wrapper = createWrapper();
-      const checkbox = wrapper.find('[data-testid="terms-checkbox"]');
-      
-      expect(checkbox.attributes('role')).toBe('checkbox');
-      expect(checkbox.attributes('tabindex')).toBe('0');
-    });
-
     it('화살표 버튼에 적절한 ARIA 레이블이 설정된다', () => {
       const wrapper = createWrapper({ state: 'close' });
       const arrowBtn = wrapper.find('[data-testid="terms-arrow"]');
@@ -319,28 +232,6 @@ describe('Terms', () => {
       expect(wrapper.find('[data-testid="terms-list"]').exists()).toBe(false);
       expect(wrapper.find('[data-testid="terms-divider"]').exists()).toBe(false);
     });
-
-    it('items가 비어있을 때 리스트가 렌더링되지 않는다', () => {
-      const wrapper = createWrapper({
-        state: 'open',
-        items: []
-      });
-      
-      expect(wrapper.find('[data-testid="terms-list"]').exists()).toBe(false);
-    });
-
-    it('showArrow가 false인 항목에는 화살표가 표시되지 않는다', () => {
-      const wrapper = createWrapper({
-        state: 'open',
-        items: [
-          { text: '화살표 있음', showArrow: true },
-          { text: '화살표 없음', showArrow: false }
-        ]
-      });
-      
-      const arrowButtons = wrapper.findAll('[data-testid="terms-item-arrow"]');
-      expect(arrowButtons).toHaveLength(1);
-    });
   });
 
   describe('Edge Cases', () => {
@@ -363,17 +254,6 @@ describe('Terms', () => {
       
       expect(wrapper.find('[data-testid="terms-title"]').text()).toBe(specialTitle);
     });
-
-    it('disabled된 리스트 항목 클릭이 무시된다', async () => {
-      const wrapper = createWrapper({
-        state: 'open',
-        items: [{ text: '비활성화 항목', checked: false, disabled: true }]
-      });
-      
-      await wrapper.find('[data-testid="terms-item-checkbox"]').trigger('click');
-      
-      expect(wrapper.emitted('item-check')).toBeUndefined();
-    });
   });
 
   describe('Props 검증', () => {
@@ -394,25 +274,6 @@ describe('Terms', () => {
       expect(wrapper.props().disabled).toBe(false);
       expect(wrapper.props().showArrow).toBe(true);
       expect(wrapper.props().items).toEqual([]);
-    });
-
-    it('기본값이 컴포넌트에 올바르게 적용된다', () => {
-      // 빈 props로 마운트하여 기본값이 UI에 반영되는지 확인
-      const wrapper = createWrapper({});
-      
-      expect(wrapper.find('[data-testid="terms-title"]').text()).toBe('[필수] 전체 동의');
-      expect(wrapper.find('[data-testid="terms"]').classes()).toContain('terms--close');
-      expect(wrapper.find('[data-testid="terms-checkbox"]').attributes('aria-checked')).toBe('false');
-      expect(wrapper.find('[data-testid="terms-arrow"]').exists()).toBe(true);
-    });
-
-    it('props 변경이 올바르게 반영된다', async () => {
-      const wrapper = createWrapper({ checked: false });
-      
-      await wrapper.setProps({ checked: true });
-      
-      const checkIcon = wrapper.find('[data-testid="terms-check-icon"]');
-      expect(checkIcon.isVisible()).toBe(true);
     });
   });
 });

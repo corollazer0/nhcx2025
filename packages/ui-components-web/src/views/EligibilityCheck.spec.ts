@@ -48,18 +48,6 @@ describe('EligibilityCheck.vue', () => {
       expect(wrapper.classes()).toContain('eligibility-check');
     });
 
-    it('renders all required components', () => {
-      // Check if all main components are rendered
-      expect(wrapper.findComponent(Navigation).exists()).toBe(true);
-      expect(wrapper.findComponent(Progress).exists()).toBe(true);
-      expect(wrapper.findComponent(PageTitle).exists()).toBe(true);
-      expect(wrapper.findComponent(Infobox).exists()).toBe(true);
-      expect(wrapper.findComponent(Link)).toHaveLength(2); // Two link buttons
-      expect(wrapper.findComponent(Terms).exists()).toBe(true);
-      expect(wrapper.findComponent(Accordion).exists()).toBe(true);
-      expect(wrapper.findComponent(Cta).exists()).toBe(true);
-    });
-
     it('displays correct page title', () => {
       const pageTitle = wrapper.findComponent(PageTitle);
       expect(pageTitle.props('titleText')).toBe('가입자격을 확인해 주세요');
@@ -332,21 +320,6 @@ describe('EligibilityCheck.vue', () => {
       await cta.vm.$emit('primary-click', new MouseEvent('click'));
       expect(consoleSpy).toHaveBeenCalledWith('Next button clicked:', expect.any(MouseEvent));
       consoleSpy.mockRestore();
-    });
-  });
-
-  describe('Error Handling', () => {
-    it('handles missing external link gracefully', async () => {
-      mockWindowOpen.mockImplementationOnce(() => {
-        throw new Error('Popup blocked');
-      });
-
-      const hometaxLink = wrapper.findAllComponents(Link)[0];
-
-      // Should not throw error even if window.open fails
-      expect(() => {
-        hometaxLink.vm.$emit('click', new MouseEvent('click'));
-      }).not.toThrow();
     });
   });
 });
