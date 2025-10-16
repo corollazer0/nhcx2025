@@ -94,6 +94,8 @@ const handleItemClick = (item: CardListItem, index: number) => {
   color: #505050;
   letter-spacing: -0.02em;
   max-width: 108px;
+  white-space: pre-line;
+  word-break: keep-all;
 }
 
 .card-list__data {
@@ -112,6 +114,7 @@ const handleItemClick = (item: CardListItem, index: number) => {
   text-align: right;
   color: #121212;
   letter-spacing: -0.02em;
+  word-break: keep-all;
 }
 
 .card-list__label {

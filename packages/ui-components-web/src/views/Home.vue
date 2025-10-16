@@ -2,14 +2,26 @@
   <div class="home">
     <div class="home__header">
       <h1 class="home__title">UI Components Library</h1>
-      <p class="home__description">
-        Vue 3 기반 UI 컴포넌트 라이브러리입니다.
-      </p>
+      <p class="home__description">Vue 3 기반 UI 컴포넌트 라이브러리입니다.</p>
     </div>
 
     <div class="home__content">
       <div class="home__component-demo">
         <h2 class="home__section-title">컴포넌트 데모</h2>
+
+        <!-- Navigation Demo -->
+        <!-- <div class="home__demo-section">
+          <h3>Navigation</h3>
+          <Navigation
+            cancel
+            cancelAriaLabel="취소"
+            csAriaLabel="고객센터"
+            previous
+            previousAriaLabel="이전 페이지로 이동"
+            title
+            title1="서비스 타이틀"
+          />
+        </div> -->
 
         <!-- Breadcrumb Demo -->
         <div class="home__demo-section">
@@ -45,16 +57,35 @@
       <div class="home__navigation">
         <h2 class="home__section-title">페이지 목록</h2>
         <div class="home__page-list">
-          <router-link
-            to="/eligibility-check"
-            class="home__page-link"
-          >
+          <router-link to="/eligibility-check" class="home__page-link">
             <div class="home__page-card">
               <h3 class="home__page-title">가입자격 확인</h3>
-              <p class="home__page-description">
-                청약가입 시 가입자격을 확인하는 페이지입니다.
-              </p>
+              <p class="home__page-description">청약가입 시 가입자격을 확인하는 페이지입니다.</p>
               <span class="home__page-route">/eligibility-check</span>
+            </div>
+          </router-link>
+
+          <router-link to="/subscription-eligibility" class="home__page-link">
+            <div class="home__page-card">
+              <h3 class="home__page-title">청약가입 자격확인</h3>
+              <p class="home__page-description">청년주택드림청약통장 가입자격을 확인하는 페이지입니다.</p>
+              <span class="home__page-route">/subscription-eligibility</span>
+            </div>
+          </router-link>
+
+          <router-link to="/conversion-info" class="home__page-link">
+            <div class="home__page-card">
+              <h3 class="home__page-title">전환정보</h3>
+              <p class="home__page-description">보유한 청약통장으로 전환가입을 진행하는 페이지입니다.</p>
+              <span class="home__page-route">/conversion-info</span>
+            </div>
+          </router-link>
+
+          <router-link to="/conversion-notice" class="home__page-link">
+            <div class="home__page-card">
+              <h3 class="home__page-title">전환 가입 유의사항</h3>
+              <p class="home__page-description">전환 가입 시 유의사항을 확인하는 페이지입니다.</p>
+              <span class="home__page-route">/conversion-notice</span>
             </div>
           </router-link>
         </div>
@@ -64,10 +95,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import Breadcrumb from '../components/Breadcrumb.vue'
-import GeneralList from '../components/GeneralList.vue'
-import Cta from '../components/Cta.vue'
+import { ref } from 'vue';
+import Breadcrumb from '../components/Breadcrumb.vue';
+import GeneralList from '../components/GeneralList.vue';
+import Cta from '../components/Cta.vue';
+import Navigation from '../components/Navigation.vue';
 
 const breadcrumbItems = ref([
   { name: '홈', path: '/' },
@@ -76,24 +108,24 @@ const breadcrumbItems = ref([
   { name: '3Depth', path: '/1depth/2depth/3depth' },
   { name: '4Depth', path: '/1depth/2depth/3depth/4depth' },
   { name: '5Depth', path: '/1depth/2depth/3depth/4depth/5depth' },
-])
+]);
 
 // Event handlers
 const handleCtaClick = (event: MouseEvent) => {
-  console.log('CTA 버튼 클릭:', event)
-}
+  console.log('CTA 버튼 클릭:', event);
+};
 
 const handlePurchase = (event: MouseEvent) => {
-  console.log('구매 버튼 클릭:', event)
-}
+  console.log('구매 버튼 클릭:', event);
+};
 
 const handleClose = (event: MouseEvent) => {
-  console.log('닫기 버튼 클릭:', event)
-}
+  console.log('닫기 버튼 클릭:', event);
+};
 
 const handleItemClick = (item: any, index: number, event: MouseEvent | KeyboardEvent) => {
-  console.log('리스트 아이템 클릭:', { item, index, eventType: event.constructor.name })
-}
+  console.log('리스트 아이템 클릭:', { item, index, eventType: event.constructor.name });
+};
 </script>
 
 <style scoped>
