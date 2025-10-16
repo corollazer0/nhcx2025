@@ -5,6 +5,7 @@ import EligibilityCheck from '../views/EligibilityCheck.vue';
 import SubscriptionEligibility from '../views/SubscriptionEligibility.vue';
 import ConversionInfo from '../views/ConversionInfo.vue';
 import ConversionNotice from '../views/ConversionNotice.vue';
+import ScrapingTerms from '../views/ScrapingTerms.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -50,6 +51,15 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '전환 가입 유의사항',
       description: '전환 가입 시 유의사항을 확인하는 페이지',
+    },
+  },
+  {
+    path: '/scraping-terms',
+    name: 'ScrapingTerms',
+    component: ScrapingTerms,
+    meta: {
+      title: '스크래핑 약관 동의',
+      description: '스크래핑 약관에 동의하는 페이지',
     },
   },
 ];

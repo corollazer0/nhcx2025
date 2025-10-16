@@ -88,6 +88,14 @@
               <span class="home__page-route">/conversion-notice</span>
             </div>
           </router-link>
+
+          <router-link to="/scraping-terms" class="home__page-link">
+            <div class="home__page-card">
+              <h3 class="home__page-title">스크래핑 약관 동의</h3>
+              <p class="home__page-description">스크래핑 약관에 동의하는 페이지입니다.</p>
+              <span class="home__page-route">/scraping-terms</span>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
