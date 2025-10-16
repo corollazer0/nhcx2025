@@ -2,6 +2,9 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 // Views
 import EligibilityCheck from '../views/EligibilityCheck.vue';
+import SubscriptionEligibility from '../views/SubscriptionEligibility.vue';
+import ConversionInfo from '../views/ConversionInfo.vue';
+import ConversionNotice from '../views/ConversionNotice.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -20,6 +23,33 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '가입자격 확인',
       description: '청약가입 가입자격을 확인하는 페이지',
+    },
+  },
+  {
+    path: '/subscription-eligibility',
+    name: 'SubscriptionEligibility',
+    component: SubscriptionEligibility,
+    meta: {
+      title: '청약가입 자격확인',
+      description: '청년주택드림청약통장 가입자격을 확인하는 페이지',
+    },
+  },
+  {
+    path: '/conversion-info',
+    name: 'ConversionInfo',
+    component: ConversionInfo,
+    meta: {
+      title: '전환정보',
+      description: '보유한 청약통장으로 전환가입을 진행하는 페이지',
+    },
+  },
+  {
+    path: '/conversion-notice',
+    name: 'ConversionNotice',
+    component: ConversionNotice,
+    meta: {
+      title: '전환 가입 유의사항',
+      description: '전환 가입 시 유의사항을 확인하는 페이지',
     },
   },
 ];
