@@ -18,8 +18,8 @@
             />
           </div>
         </div>
-        <button 
-          class="text-content" 
+        <button
+          class="text-content"
           data-name="bullet-text-content"
           type="button"
           :aria-label="`1차 항목: ${text || '내용 없음'}. 클릭하여 상호작용`"
@@ -28,7 +28,9 @@
           @keydown.enter.prevent="handleTextClick"
           @keydown.space.prevent="handleTextClick"
         >
-          <p class="text-paragraph" :id="ariaDescribedById">{{ text || '내용을 입력하세요.' }}</p>
+          <p class="text-paragraph" :id="ariaDescribedById">
+            <slot>{{ text || '내용을 입력하세요.' }}</slot>
+          </p>
         </button>
       </div>
     </div>
@@ -55,8 +57,8 @@
             </div>
           </div>
         </div>
-        <button 
-          class="text-content" 
+        <button
+          class="text-content"
           data-name="bullet-text-content"
           type="button"
           :aria-label="`2차 하위 항목: ${text || '내용 없음'}. 클릭하여 상호작용`"
@@ -65,7 +67,9 @@
           @keydown.enter.prevent="handleTextClick"
           @keydown.space.prevent="handleTextClick"
         >
-          <p class="text-paragraph" :id="ariaDescribedById">{{ text || '내용을 입력하세요.' }}</p>
+          <p class="text-paragraph" :id="ariaDescribedById">
+            <slot>{{ text || '내용을 입력하세요.' }}</slot>
+          </p>
         </button>
       </div>
     </div>
