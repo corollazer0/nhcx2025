@@ -250,6 +250,8 @@ const handleItemClick = (item: SummaryItem, index: number) => {
   letter-spacing: -0.3px;
   color: var(--color-text-font-3);
   flex-shrink: 0;
+  white-space: pre-line; /* Enable line breaks from \n */
+  word-break: keep-all; /* Prevent breaking Korean words */
 }
 
 .summary__list-data {
@@ -260,6 +262,7 @@ const handleItemClick = (item: SummaryItem, index: number) => {
   letter-spacing: -0.3px;
   color: var(--color-text-font-1);
   text-align: right;
+  word-break: keep-all; /* Prevent breaking Korean words */
 }
 
 /* Toggle Button */
