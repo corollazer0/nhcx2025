@@ -26,7 +26,15 @@
         class="summary__list-item"
       >
         <div class="summary__list-title">{{ item.title }}</div>
-        <div class="summary__list-data">{{ item.data }}</div>
+        <div
+          class="summary__list-data"
+          :class="{
+            'summary__list-data--green': item.color === 'green',
+            'summary__list-data--red': item.color === 'red',
+            'summary__list-data--blue': item.color === 'blue'
+          }"
+          v-html="item.data"
+        ></div>
       </div>
     </div>
 
@@ -64,6 +72,7 @@ import { computed, ref } from 'vue';
 interface SummaryItem {
   title: string;
   data: string;
+  color?: 'default' | 'green' | 'red' | 'blue';
 }
 
 interface SummaryProps {
@@ -250,6 +259,7 @@ const handleItemClick = (item: SummaryItem, index: number) => {
   letter-spacing: -0.3px;
   color: var(--color-text-font-3);
   flex-shrink: 0;
+  text-align: left; /* 좌측 정렬 */
   white-space: pre-line; /* Enable line breaks from \n */
   word-break: keep-all; /* Prevent breaking Korean words */
 }
@@ -263,6 +273,20 @@ const handleItemClick = (item: SummaryItem, index: number) => {
   color: var(--color-text-font-1);
   text-align: right;
   word-break: keep-all; /* Prevent breaking Korean words */
+  white-space: pre-line; /* Allow line breaks in HTML */
+}
+
+/* Color variants for data */
+.summary__list-data--green {
+  color: #19973c; /* Figma green color */
+}
+
+.summary__list-data--red {
+  color: #e53e3e;
+}
+
+.summary__list-data--blue {
+  color: #3182ce;
 }
 
 /* Toggle Button */
