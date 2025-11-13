@@ -11,105 +11,86 @@ iOS플랫폼은 PoC 일정 상 제외하였습니다. 각 플랫폼의 개발 �
 ### [DesignOps PoC에 대한 기본 이해](https://storied-cobbler-9d6c2d.netlify.app/)
 
 ## NHCX 프로젝트 아키텍처 다이어그램
+- 전체 흐름도
 ```mermaid
----
-config:
-  layout: fixed
-  theme: neo
-  look: neo
----
 flowchart TD
- subgraph subGraph0["기획 및 디자인 영역"]
-        B("Figma & Token Studio")
-        A["👩‍🎨 디자이너"]
-        C{"📄 tokens.json"}
-  end
- subgraph subGraph1["중앙 관리 및 변환 영역"]
-        D["☁️ Git Repository"]
-        E["👨‍💻 개발자"]
-        F["⚙️ Style Dictionary"]
-        G1("🎨 variables.css")
-        G2("📱 Colors.kt")
-  end
- subgraph subGraph2["웹 개발 영역"]
-        H1["🌐 ui-components-web"]
-        I1("📙 Storybook")
-        K1("🌐 web-app develop")
-  end
- subgraph subGraph3["안드로이드 개발 영역"]
-        H2["🤖 ui-components-android"]
-        I2("🖼️ Compose Preview")
-        K2("🤖 Andrioid app develop")
-  end
-    A --> B
-    B -- [1] 토큰 정의 및 수정 --> C
-    C -- [2] Git에 Push --> D
-    E -- [3] Git Pull --> D
-    E -- [4] 빌드 명령어 실행<br>(npm run build:tokens) --> F
-    D -- 입력 --> F
-    F -- [4-1]CSS 변환 --> G1
-    F -- [4-1]Kotlin 변환 --> G2
-    G1 --[5-1]컴포넌트 배포--> H1
-    H1 --[5-3]웹 개발--> I1 & K1
-    E -- [5-2]컴포넌트 확인 --> I1 & I2
-    G2 --[5-1]컴포넌트 배포--> H2
-    H2 --[5-3]앱 개발--> I2 & K2
+    %% --- 색상 정의 (다크/라이트 모두 잘 보이는 파스텔+진한 테두리 조합) ---
+    %% 1. 기획/디자인 (보라색 계열): 창의성, 토큰
+    classDef design fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#333;
+    
+    %% 2. 데이터/파일 (회색/블루그레이 계열): 중립적, 저장소
+    classDef data fill:#ECEFF1,stroke:#455A64,stroke-width:2px,stroke-dasharray: 5 5,color:#333;
+    
+    %% 3. 변환/로직 (주황색 계열): 처리, 액션
+    classDef transform fill:#FFF3E0,stroke:#EF6C00,stroke-width:2px,color:#333;
+    
+    %% 4. 웹 (파란색 계열): 표준 웹 컬러
+    classDef web fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#333;
+    
+    %% 5. 안드로이드 (초록색 계열): 안드로이드 브랜드 컬러
+    classDef android fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#333;
 
+    %% --- 차트 내용 ---
+    subgraph Design["🎨 기획 및 디자인 영역"]
+        A["👩‍🎨 디자이너"]:::design --> B("Figma & Token Studio"):::design
+        B -- "[1] 토큰 추출" --> C[("📄 tokens.json")]:::data
+    end
 
+    subgraph Transform["⚙️ 중앙 관리 및 변환"]
+        C -- "[2] Push" --> D["☁️ Git Repository"]:::data
+        
+        D -- "[3] Pull & Build" --> F["⚙️ Style Dictionary"]:::transform
+        
+        F -- "[4-1] 변환" --> G1("🎨 variables.css"):::data
+        F -- "[4-2] 변환" --> G2("📱 Foundation.kt"):::data
+    end
+
+    subgraph Web["🌐 웹 개발 영역"]
+        G1 -- "[5] import" --> H1["📦 ui-components-web"]:::web
+        H1 --> I1("📙 Storybook"):::web
+        H1 --> K1("🌐 Web App"):::web
+    end
+
+    subgraph Android["🤖 안드로이드 개발 영역"]
+        G2 -- "[5] import" --> H2["📦 ui-components-android"]:::android
+        H2 --> I2("🖼️ Compose Preview"):::android
+        H2 --> K2("🤖 Android App"):::android
+    end
 ```
-```mermaid
-flowchart LR
-  subgraph SaaS["🎨 Figma SaaS"]
-    Figma[Figma & Token Studio]
-  end
-
-  subgraph Dev["💻 개발자 PC"]
-    DevPC[디자이너 & 개발자 작업 PC]
-  end
-
-  subgraph Infra["☁️ AWS 서버"]
-    GitRepo[Git Repository]
-    WebServer[웹 서버]
-    AppBuild[앱 빌드 서버]
-  end
-
-  subgraph User["👤 고객"]
-    WebUser[🌐 웹 사용자_브라우저]
-    AppUser[📱 앱 사용자_모바일]
-  end
-
-  %% 사용자 흐름
-  Figma --> DevPC
-  DevPC --> GitRepo
-  GitRepo --> WebServer
-  GitRepo --> AppBuild
-  WebServer --> WebUser
-  AppBuild --> AppUser
-
-```
-
+- 전체 흐름도
 ```mermaid
 graph TD
-    A[디자이너] --> B{Figma: UI 컴포넌트 기획 및 디자인};
-    B --> C{개발자};
+    %% 비즈니스 및 기획 영역
+    subgraph Planning ["기획 및 디자인"]
+        A[Biz: 요구사항 도출] --> B[Figma: UI 기획 및 디자인]
+    end
 
-    C --> D[Vue.js: 컴포넌트 개발];
-    D --> E[Storybook: 컴포넌트 시각화 및 문서화];
+    %% 개발 및 배포 영역
+    subgraph Development ["IT 개발"]
+        B -- 핸드오프 --> D[Vue.js: 컴포넌트 개발]
+        
+        D --> E[Storybook: 컴포넌트 시각화/문서화]
+        D --> G[Vitest: 단위/통합 테스트]
+        E --> F[Chromatic: 시각적 회귀 테스트]
 
-    E --> F[Chromatic: 시각적 회귀 테스트];
-    D --> G[Vitest: 단위/통합 테스트];
+        %% 테스트 결과를 모아서 판단
+        F --> H{테스트 통과?}
+        G --> H
 
-    F -- 시각적 변화 감지/승인 --> H[CI/CD 파이프라인];
-    G -- 테스트 결과 --> H;
+        %% 분기 처리 (Decision)
+        H -- No (수정) --> D
+        H -- Yes (승인) --> I[CI/CD 파이프라인 가동]
+    end
 
-    H --> I[NPM: 컴포넌트 라이브러리 배포];
-    H --> J[Storybook/Chromatic 호스팅: 문서 및 데모 배포];
+    %% 배포 및 결과
+    I --> J[NPM: 라이브러리 배포]
+    I --> K[Storybook 웹 호스팅]
 
-    I -- 재사용 --> K[다른 Vue.js 프로젝트];
-    J -- 참고 --> A;
-    J -- 참고 --> K;
+    %% 피드백 및 재사용 루프
+    J -. 재사용 .-> L[다른 Vue.js 프로젝트]
+    K -. 검토 .-> A
+    K -. 레퍼런스 .-> L
 ```
-
 ---
 
 ## 1. 프로젝트 목표 (우리가 하려는 것)
